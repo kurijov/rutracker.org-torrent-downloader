@@ -48,6 +48,8 @@ Running
 -------
 `npm start` - starts as daemon and writes log to `logfile.log`, you can try check it for troubleshooting.
 
+`npm stop` - stops daemon
+
 `./cli --help` - get some help
 
 `./cli add <url>` - add new torrent eg: `./cli add http://rutracker.org/forum/viewtopic.php?t=3467180`

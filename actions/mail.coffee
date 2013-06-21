@@ -5,6 +5,7 @@ config     = require '../config'
 smtp_options = config.smtp_options
 
 module.exports = (dbInstance) ->
+  return if Object.keys(smtp_options).length is 0
 
   transport = nodemailer.createTransport("SMTP", smtp_options)
 
