@@ -1,6 +1,5 @@
 node_modules
 .cookies
 trntsdb.db
-files/
 logfile.log
 config.coffee

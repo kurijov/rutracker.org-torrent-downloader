@@ -38,7 +38,7 @@ Configuration
   `deliver_mail.from` - used in `from` field
 
 
-  These ones you wont want to change
+  These ones you won't want to change
 
   `transmission.host` - transmission rpc url
   
