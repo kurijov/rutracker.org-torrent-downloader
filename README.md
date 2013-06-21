@@ -8,6 +8,7 @@ Requirements
 -------
 
 `nodejs` - tested on 0.10.2
+
 `transmission`
 
 Installation
@@ -19,19 +20,26 @@ Configuration
 
 1. Rename `config.example` to `config.coffee`
 2. Options description:
+
   These ones you will want to set
+
   `user.login` - your rutracker login
+
   `user.password` - your rutracker password
+
   `check_period` - time in seconds, period to check for changes
 
   if you wish to get email when torrent started new downlaod, you can set these params
 
   `smtp_options` - check available options at https://github.com/andris9/Nodemailer
+
   `deliver_mail.to` - address to deliver
+
   `deliver_mail.from` - used in `from` field
 
 
   These ones you wont want to change
+
   `transmission.host` - transmission rpc url
   
   `web_port` - application creates web server in order to expose some api, this port will be used for listening
