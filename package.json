@@ -1,0 +1,32 @@
+{
+  "name": "rutracker",
+  "description": "Test server",
+  "version": "0.0.1",
+  "homepage": "",
+  "author": "Lodoss team",
+  "repository": "",
+  "engines": {
+    "node": ">=0.8.14"
+  },
+  "dependencies": {
+    "jsdom": "~0.6.5",
+    "request": "~2.21.0",
+    "async": "~0.2.9",
+    "zombie": "~2.0.0-alpha19",
+    "persist": "~0.2.7",
+    "sqlite3": "~2.1.9",
+    "iconv": "~2.0.6",
+    "underscore": "~1.4.4",
+    "express": "~3.2.6",
+    "commander": "~1.2.0",
+    "cli-table": "~0.2.0",
+    "timeago": "~0.1.0",
+    "nodemailer": "~0.4.4",
+    "coffee-script": "~1.6.3",
+    "forever": "~0.10.8"
+  },
+  "scripts": {
+    "start": "./node_modules/forever/bin/forever start -o ./logfile.log index.js",
+    "stop": "./node_modules/forever/bin/forever stop index.js"
+  }
+}
