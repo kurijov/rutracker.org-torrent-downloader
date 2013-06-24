@@ -9,7 +9,7 @@ module.exports = (torrentPath, download_dir, callback) ->
 
       addData = {
         metainfo       : torrentFileContent
-        paused         : yes
+        paused         : no
         "download-dir" : download_dir
       }
 

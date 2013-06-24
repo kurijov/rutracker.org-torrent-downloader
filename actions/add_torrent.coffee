@@ -24,7 +24,6 @@ module.exports = (torrentUrl, params, callback) ->
     (torrentInfo, callback) ->
       async.parallel [
         (callback) -> require('./get_torrent_title') torrentUrl, callback
-        # (callback) -> require('./get_session') callback
         (callback) -> require('./trnt_model')().ready callback
       ], (error, [title]) ->
 
