@@ -1,7 +1,7 @@
 rutracker.org
 ======
 
-the app allows to watch favourite series by checking themes at rutracker.org
+the app allows to watch favourite series by checking themes at rutracker.org, download new torrent files and add them to transmission automatically.
 
 
 Requirements
@@ -59,3 +59,5 @@ Running
 `./cli check` - check torrents right now
 
 Note: if you want to delete torrent - just remove it from transmission
+
+Note: You will want to run check_mail_delivery.coffee in order to check if mail delivery works.
