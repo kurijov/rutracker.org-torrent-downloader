@@ -3,3 +3,5 @@ node_modules
 trntsdb.db
 logfile.log
 config.coffee
+files/*
+!files/download.sh

@@ -6,10 +6,13 @@ the app allows to watch favourite series by checking themes at rutracker.org, do
 
 Requirements
 -------
+`OS` - `linux/mac`
 
 `nodejs` - tested on 0.10.2
 
-`transmission`
+`transmission` with remote enabled
+
+`wget`
 
 Installation
 -------

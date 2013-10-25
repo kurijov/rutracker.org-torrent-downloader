@@ -32,7 +32,6 @@ apiCall = (method, params, callback) ->
   # console.log 'making request', requestData
 
   request requestData, (error, response, result) ->
-    console.log '>>>>>>>', response.statusCode
     return callback error if error
     if response.statusCode is 409 # wrong token
       wrongTokenCounter++

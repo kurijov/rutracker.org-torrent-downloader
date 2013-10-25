@@ -12,7 +12,6 @@
     "jsdom": "~0.6.5",
     "request": "~2.21.0",
     "async": "~0.2.9",
-    "zombie": "~2.0.0-alpha19",
     "persist": "~0.2.7",
     "sqlite3": "~2.1.9",
     "iconv": "~2.0.6",
