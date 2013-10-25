@@ -1,6 +1,4 @@
 async = require 'async'
-# api   = require './api'
-# fs    = require 'fs'
 _     = require 'underscore'
 
 module.exports = (torrentUrl, params, callback) ->
@@ -27,7 +25,6 @@ module.exports = (torrentUrl, params, callback) ->
         (callback) -> require('./trnt_model')().ready callback
       ], (error, [title]) ->
 
-        console.log 'got ', error, title
         return callback error if error
   
         {model, connection} = require('./trnt_model')()

@@ -35,11 +35,9 @@ module.exports = (callback) ->
         torrentInfo = _.findWhere trntInfos, {hashString: dbItem.hash}
         console.log 'we found', torrentInfo
         if torrentInfo
-          # dbItem.t_id = torrentInfo.id
           toUpdateIds.push {item: dbItem, update: {t_id: torrentInfo.id}}
         else
           toRemoveItems.push dbItem
-
       
       async.parallel [
         (callback) ->

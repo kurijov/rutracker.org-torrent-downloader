@@ -1,8 +1,5 @@
-# apiCall = require('./api')
-async   = require 'async'
+async  = require 'async'
 config = require '../config'
-# request = require 'request'
-# fs      = require 'fs'
 
 url  = require 'url'
 exec = require('child_process').exec
