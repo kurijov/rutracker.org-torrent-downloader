@@ -5,6 +5,7 @@ _      = require 'underscore'
 
 updateInstace = Q.denodeify (dbItemInstance, data, callback) ->
   {connection} = require('./trnt_model')()
+  console.log 'updating data', data
   dbItemInstance.update connection, data, callback
 
 checkItem = (dbItemInstance) ->
@@ -29,10 +30,7 @@ checkNow = () ->
   require('./trnt_model')().readyQ()
     .then(require('./sync_torrents'))
     .then( (items) ->
-      pr = Q()
-      _.each items, (item) ->
-        pr = pr.then(Q(item).then(checkItem))
-
+      Q.all (checkItem item for item in items)
     )
     .then(require('./sync_torrents'))
 
