@@ -27,7 +27,7 @@ apiCall = (method, params, callback) ->
     jar     : jar
 
   request requestData, (error, response, result) ->
-    return callback error if error
+    return callback "Is transmission RPC enabled?" if error
     if response.statusCode is 409 # wrong token
       wrongTokenCounter++
       if wrongTokenCounter > 10

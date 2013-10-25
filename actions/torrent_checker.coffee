@@ -3,9 +3,8 @@ config = require "../config"
 Q      = require 'q'
 _      = require 'underscore'
 
-updateInstace = Q.denodeify (data, callback) ->
+updateInstace = Q.denodeify (dbItemInstance, data, callback) ->
   {connection} = require('./trnt_model')()
-  updateData = {tracker_title: theNewTitle, checked_at: new Date}
   dbItemInstance.update connection, data, callback
 
 checkItem = (dbItemInstance) ->
@@ -19,7 +18,7 @@ checkItem = (dbItemInstance) ->
         Q()
 
       updateData = {tracker_title: theNewTitle, checked_at: new Date}
-      p2         = updateInstace updateData
+      p2         = updateInstace dbItemInstance, updateData
 
       Q.all [p1, p2]
     )
@@ -33,6 +32,7 @@ checkNow = () ->
       pr = Q()
       _.each items, (item) ->
         pr = pr.then(Q(item).then(checkItem))
+
     )
     .then(require('./sync_torrents'))
 

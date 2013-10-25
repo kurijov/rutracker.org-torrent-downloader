@@ -16,8 +16,11 @@ syncPromise = Q.denodeify (callback) ->
         (callback) -> 
           async.waterfall [
             (callback) -> 
-              api('torrent-get', {fields: ['hashString', 'id']}).done (result) ->
-                callback null, result
+              api('torrent-get', {fields: ['hashString', 'id']})
+                .then (result) ->
+                  callback null, result
+                , (error) ->
+                  callback error
             (result, callback) ->
               if result.result is 'success'
                 callback null, result.arguments.torrents
