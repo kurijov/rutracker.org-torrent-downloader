@@ -1,9 +1,9 @@
-async = require 'async'
+async   = require 'async'
 request = require 'request'
+Q       = require 'q'
+jsdom   = require("jsdom")
 
-jsdom = require("jsdom");
-
-module.exports = (url, callback) ->
+module.exports = Q.denodeify (url, callback) ->
   async.waterfall [
     (callback) -> 
       requestData =

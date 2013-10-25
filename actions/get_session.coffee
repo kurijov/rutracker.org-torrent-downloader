@@ -1,12 +1,11 @@
 async = require 'async'
 api   = require './api'
 
-module.exports = (callback) ->
-  async.waterfall [
-    (callback) -> api 'session-get', {}, callback
-    (result, callback) ->
+module.exports = () ->
+  api('session-get', {})
+    .then( (result) ->
       if result.result is 'success'
-        callback null, result.arguments
+        result.arguments
       else
-        callback result
-  ], callback
+        throw new Error result
+    )

@@ -2,13 +2,12 @@ app   = require('express')()
 async = require('async')
 
 app.post '/check', (req, res, next) ->
-
-  async.waterfall [
-    (callback) -> require('../actions/torrent_checker').checkNow callback
-  ], (error, result) ->
-    if error
-      res.json 500, error
-    else
+  require('../actions/torrent_checker').checkNow()
+    .fail (error) ->
+      res.status 500
+      error
+    .done (result) ->
+      console.log 'giving response', result
       res.json result
-
+  
 module.exports = app

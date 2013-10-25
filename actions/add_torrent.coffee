@@ -1,44 +1,40 @@
 async = require 'async'
 _     = require 'underscore'
+Q     = require 'q'
 
-module.exports = (torrentUrl, params, callback) ->
-  if 'function' is typeof params
-    callback = params
-    params   = {}
+createTorrent = Q.denodeify (params, torrentInfo, torrentUrl, title, callback) ->
+  {model, connection} = require('./trnt_model')()
 
+  newTorrent = new model
+    t_id          : torrentInfo.id
+    hash          : torrentInfo.hashString
+    name          : torrentInfo.name
+    tracker_title : title
+    torrent_url   : torrentUrl
+    download_dir  : params.download_dir
+    checked_at    : new Date
 
-  async.waterfall [
-    (callback) ->
-      async.parallel [
-        (callback) -> require('./get_session') callback
-        (callback) -> require('./download_torrent') torrentUrl, callback
-      ], callback
-      
-    ([transmissionSettings, torrentPath], callback) ->    
-      console.log 'adding', torrentPath
-      params = _.defaults params, {download_dir: transmissionSettings['download-dir']}
-      require('./api_add_torrent') torrentPath, params.download_dir, callback
+  newTorrent.save(connection, callback)
 
-    (torrentInfo, callback) ->
-      async.parallel [
-        (callback) -> require('./get_torrent_title') torrentUrl, callback
-        (callback) -> require('./trnt_model')().ready callback
-      ], (error, [title]) ->
+module.exports = (torrentUrl, params) ->
+  params = {} unless params
 
-        return callback error if error
-  
-        {model, connection} = require('./trnt_model')()
-
-
-        newTorrent = new model
-          t_id          : torrentInfo.id
-          hash          : torrentInfo.hashString
-          name          : torrentInfo.name
-          tracker_title : title
-          torrent_url   : torrentUrl
-          download_dir  : params.download_dir
-          checked_at    : new Date
-
-        newTorrent.save(connection, callback)
-
-  ], callback
+  Q.all([
+    require('./get_session')
+    require('./download_torrent') torrentUrl
+  ])
+  .spread( (transmissionSettings, torrentPath) ->
+    console.log 'adding', torrentPath
+    params = _.defaults params, {download_dir: transmissionSettings['download-dir']}
+    require('./api_add_torrent') torrentPath, params.download_dir
+  )
+  .then( (torrentInfo) ->
+    Q.all([
+      require('./get_torrent_title') torrentUrl
+      require('./trnt_model')().readyQ()
+    ]).spread (title) ->
+      return [torrentInfo, torrentUrl, title]
+  )
+  .spread( (torrentInfo, torrentUrl, title) ->
+    createTorrent params, torrentInfo, torrentUrl, title
+  )

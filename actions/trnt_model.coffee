@@ -1,4 +1,5 @@
 persist = require('persist')
+Q = require 'q'
 type = persist.type
 
 Torrent = persist.define "Torrent",
@@ -35,18 +36,21 @@ persist.connect {
     console.log 'DDL: ->', error, result
     connectionObject = connection
 
+fnCheck = (callback) ->
+  check = ->
+    if connectionObject
+      callback()
+    else
+      setTimeout ->
+        check()
+      , 50
+
+  check()
+
 module.exports = ->
   query: Torrent.using(connectionObject)
   model: Torrent
   connection: connectionObject
-  ready: (callback) ->
-    check = ->
-      if connectionObject
-        callback()
-      else
-        setTimeout ->
-          check()
-        , 50
-
-    check()
+  ready: fnCheck
+  readyQ: Q.denodeify(fnCheck)
 

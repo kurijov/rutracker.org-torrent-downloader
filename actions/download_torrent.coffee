@@ -1,5 +1,6 @@
 async  = require 'async'
 config = require '../config'
+Q      = require 'q'
 
 url  = require 'url'
 exec = require('child_process').exec
@@ -24,4 +25,4 @@ downloadTorrent = (urlToTorrentTheme, callback) ->
 
   ], callback
 
-module.exports = downloadTorrent
+module.exports = Q.denodeify downloadTorrent
