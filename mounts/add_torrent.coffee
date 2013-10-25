@@ -5,12 +5,12 @@ app.post '/add', (req, res, next) ->
   torrentUrl    = req.param 'url'
   download_dir  = req.param 'download_dir'
 
-  async.waterfall [
-    (callback) -> require('../actions/add_torrent') torrentUrl, {download_dir}, callback
-  ], (error, result) ->
-    if error
-      res.json 500, error
-    else
+  require('../actions/add_torrent')(torrentUrl, {download_dir})
+    .fail (error) ->
+      res.status 500
+      error
+    .done (result) ->
+      console.log 'giving response', result
       res.json result
 
 module.exports = app
