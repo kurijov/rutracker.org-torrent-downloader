@@ -1,8 +1,9 @@
 async = require 'async'
 api   = require './api'
 _     = require 'underscore'
+Q     = require 'q'
 
-module.exports = (callback) ->
+syncPromise = Q.denodeify (callback) ->
 
   async.waterfall [
     (callback) ->
@@ -14,7 +15,9 @@ module.exports = (callback) ->
         (callback) -> query.all callback
         (callback) -> 
           async.waterfall [
-            (callback) -> api 'torrent-get', {fields: ['hashString', 'id']}, callback
+            (callback) -> 
+              api('torrent-get', {fields: ['hashString', 'id']}).done (result) ->
+                callback null, result
             (result, callback) ->
               if result.result is 'success'
                 callback null, result.arguments.torrents
@@ -53,4 +56,9 @@ module.exports = (callback) ->
     (result, callback) ->
       {query} = require('./trnt_model')()
       query.all callback
+    # (items, callback) ->
+    #   console.log 'synced', items
+    #   callback null, items
   ], callback
+
+module.exports = -> syncPromise()

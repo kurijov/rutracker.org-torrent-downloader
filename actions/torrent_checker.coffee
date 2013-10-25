@@ -1,47 +1,45 @@
 async  = require 'async'
 config = require "../config"
+Q      = require 'q'
+_      = require 'underscore'
 
-checkItem = (dbItemInstance, callback) ->
+updateInstace = Q.denodeify (data, callback) ->
+  {connection} = require('./trnt_model')()
+  updateData = {tracker_title: theNewTitle, checked_at: new Date}
+  dbItemInstance.update connection, data, callback
+
+checkItem = (dbItemInstance) ->
   console.log 'checking item', dbItemInstance.tracker_title
-  async.waterfall [
-    (callback) -> require('./get_torrent_title') dbItemInstance.torrent_url, callback
-    (theNewTitle, callback) ->
-      async.parallel [
-        (callback) ->
-          if dbItemInstance.tracker_title isnt theNewTitle
-            #torrent updated, reloading
-            require('./reload_torrent') dbItemInstance, callback
-          else
-            callback()
-        (callback) ->
-          {connection} = require('./trnt_model')()
-          updateData = {tracker_title: theNewTitle, checked_at: new Date}
-          dbItemInstance.update connection, updateData, callback
-      ], callback
-      
-        
-  ], callback
+  require('./get_torrent_title')(dbItemInstance.torrent_url)
+    .then( (theNewTitle) ->
 
-checkNow = (callback) ->
+      p1 = if dbItemInstance.tracker_title isnt theNewTitle
+        require('./reload_torrent')(dbItemInstance)
+      else
+        Q()
+
+      updateData = {tracker_title: theNewTitle, checked_at: new Date}
+      p2         = updateInstace updateData
+
+      Q.all [p1, p2]
+    )
+
+checkNow = () ->
   console.log 'checking for new torrents...'
-  async.waterfall [
-    # (callback) -> require('./trnt_model')().ready callback
-    (callback) -> require('./sync_torrents') callback
-    (items, callback) -> async.eachSeries items, (item, callback) ->
-      checkItem item, (error) ->
-        if error
-          console.log 'error happened on item check', item
-        callback null
-    , callback
-    (callback) -> require('./sync_torrents') callback
 
-  ], callback
+  require('./trnt_model')().readyQ()
+    .then(require('./sync_torrents'))
+    .then( (items) ->
+      pr = Q()
+      _.each items, (item) ->
+        pr = pr.then(Q(item).then(checkItem))
+    )
+    .then(require('./sync_torrents'))
 
 run = () ->
   console.log 'started torrent checker'
   runChecker = ->
-    checkNow ->
-      console.log 'next check in', config.check_period, 'seconds'
+    checkNow().then ->
       setTimeout ->
         runChecker()
       , config.check_period * 1000

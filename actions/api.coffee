@@ -1,11 +1,10 @@
 request = require 'request'
-config = require '../config'
+config  = require '../config'
+Q       = require 'q'
 
-jar = request.jar()
+jar     = request.jar()
 
-# X-Transmission-Session-Id
-
-apiToken = null
+apiToken          = null
 wrongTokenCounter = 0
 
 apiCall = (method, params, callback) ->
@@ -15,10 +14,7 @@ apiCall = (method, params, callback) ->
     method: method
     arguments: params or {}
 
-  headers = {
-    # "X-Requested-With":"XMLHttpRequest"
-    # "User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36"
-  }
+  headers = { }
 
   if apiToken
     headers["X-Transmission-Session-Id"] = apiToken
@@ -29,7 +25,6 @@ apiCall = (method, params, callback) ->
     uri     : host
     headers : headers
     jar     : jar
-  # console.log 'making request', requestData
 
   request requestData, (error, response, result) ->
     return callback error if error
@@ -46,4 +41,4 @@ apiCall = (method, params, callback) ->
       json = JSON.parse result
       callback null, json
 
-module.exports = apiCall
+module.exports = Q.denodeify apiCall
