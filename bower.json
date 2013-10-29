@@ -1,0 +1,7 @@
+{
+  "name": "rutracker.org-downloader",
+  "dependencies": {
+    "angular": "~1.0.8",
+    "angular-bootstrap": "~0.6.0"
+  }
+}
