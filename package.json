@@ -23,7 +23,9 @@
     "nodemailer": "~0.4.4",
     "coffee-script": "~1.6.3",
     "forever": "~0.10.8",
-    "q": "~0.9.7"
+    "q": "~0.9.7",
+    "connect-assets": "~3.0.0-alpha1",
+    "swig": "~1.1.0"
   },
   "scripts": {
     "start": "./node_modules/forever/bin/forever start -o ./logfile.log index.js",

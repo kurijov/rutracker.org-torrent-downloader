@@ -1,7 +1,7 @@
 app   = require('express')()
 async = require('async')
 
-app.post '/list', (req, res, next) ->
+app.get '/list', (req, res, next) ->
   require('../actions/sync_torrents')()
     .fail (error) ->
       res.status 500

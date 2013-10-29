@@ -1,0 +1,20 @@
+<html ng-app="trackerApp">
+<head>
+  [[js('js/index.js')]]
+</head>
+<body ng-controller="TrackerListCtl">
+ 
+  <ul>
+    <li ng-repeat="torrent in torrents">
+      <p>{{torrent.tracker_title}}</p>
+      <p>{{torrent.checked_at}}</p>
+    </li>
+  </ul>
+
+  <form ng-submit="addTorrent()">
+    <input type="text" ng-model="torrentUrl" />
+    <input type="submit" value="Add" />
+  </form>
+ 
+</body>
+</html>
