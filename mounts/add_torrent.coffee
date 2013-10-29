@@ -1,7 +1,7 @@
 app   = require('express')()
 async = require('async')
 
-app.post '/add', (req, res, next) ->
+app.post '/torrents', (req, res, next) ->
   torrentUrl    = req.param 'url'
   download_dir  = req.param 'download_dir'
 

@@ -1,20 +1,19 @@
-trackerApp = angular.module('trackerApp', [])
+trackerApp = angular.module('trackerApp', ['trackerServices'])
 
 class TrackerListCtl
-  constructor: ($scope, $http) ->
+  constructor: ($scope, Torrent) ->
     $scope.torrents = []
-
-    $http.get('list').success (data) ->
-      $scope.torrents = data
+    $scope.torrents = Torrent.query()
 
     $scope.addTorrent = ->
-      $http.post('add', {url: $scope.torrentUrl}).success (data) ->
-        $scope.torrents.push data
+      newTorrent = new Torrent url: $scope.torrentUrl, tracker_title: $scope.torrentUrl
+      
+      $scope.torrents.push newTorrent
       $scope.torrentUrl = ""
 
+      newTorrent.$save().catch (error) ->
+        $scope.torrents.splice $scope.torrents.indexOf(newTorrent), 1
 
 
 
-
-
-trackerApp.controller 'TrackerListCtl', ['$scope', '$http', TrackerListCtl]
+trackerApp.controller 'TrackerListCtl', ['$scope', 'Torrent', TrackerListCtl]
