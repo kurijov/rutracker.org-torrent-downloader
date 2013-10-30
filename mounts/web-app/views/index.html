@@ -1,20 +1,33 @@
-<html ng-app="trackerApp">
+<!DOCTYPE html>
+<html ng-app="trackerApp" lang="en">
 <head>
   [[js('js/index.js')]]
+  [[css('css/bootstrap/bootstrap.css')]]
 </head>
 <body ng-controller="TrackerListCtl">
- 
-  <ul>
-    <li ng-repeat="torrent in torrents">
-      <p>{{torrent.tracker_title}}</p>
-      <p>{{torrent.checked_at}}</p>
-    </li>
-  </ul>
+  
 
-  <form ng-submit="addTorrent()">
-    <input type="text" ng-model="torrentUrl" />
-    <input type="submit" value="Add" />
-  </form>
+  <div class="container-fluid">
+
+    <table class="table table-striped">
+      <tr ng-repeat="torrent in torrents">
+        <td>{{torrent.tracker_title}}</td>
+        <td>{{torrent.checked_at}}</td>
+      </tr>
+    </table>
+
+
+    <form class="form-search" ng-submit="addTorrent()">
+      <div class="input-append">
+        <input type="text" ng-model="torrentUrl" class="span6 search-query">
+        <button type="submit" class="btn">Add Torrent</button>
+      </div>
+      
+    </form>
+
+  </div>
+
+
  
 </body>
 </html>
