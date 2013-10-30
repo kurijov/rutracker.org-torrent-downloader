@@ -16,7 +16,7 @@ createTorrent = (params, torrentInfo, torrentUrl, title) ->
     download_dir  : params.download_dir
     checked_at    : new Date
 
-  newTorrent.save()
+  newTorrent.$save()
 
 module.exports = (torrentUrl, params) ->
   params = {} unless params

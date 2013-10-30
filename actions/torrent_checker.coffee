@@ -6,7 +6,7 @@ _      = require 'underscore'
 updateInstace = (dbItemInstance, data) ->
   # {connection} = require('./trnt_model')()
   console.log 'updating data', data
-  dbItemInstance.update(data)
+  dbItemInstance.$update(data)
 
 checkItem = (dbItemInstance) ->
   console.log 'checking item', dbItemInstance.tracker_title

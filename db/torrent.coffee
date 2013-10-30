@@ -21,13 +21,17 @@ class TorrentModel
     else
       instance = new Torrent data
 
-    proxyMethods = ['save', 'delete']
+    proxyMethods = ['save', 'delete', 'update']
     _.each proxyMethods, (method) ->
       _deattachedMethod = instance[method]
-      instance[method] = ->
+      instance["$#{method}"] = (params...) ->
+
         db.then (connection) ->
-          Q.denodeify (callback) -> 
-            _deattachedMethod.call instance, connection, callback
+          promise = Q.denodeify (callback) -> 
+            paramsToCall = [].concat([connection]).concat(params).concat([callback])
+            _deattachedMethod.apply instance, paramsToCall
+
+          promise()
 
     return instance
 

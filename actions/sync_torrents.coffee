@@ -4,64 +4,35 @@ _       = require 'underscore'
 Q       = require 'q'
 Torrent = require '../db/torrent'
 
-syncPromise = Q.denodeify (callback) ->
+syncPromise = () ->
 
-  async.waterfall [
-    # (callback) ->
-    #   require('./trnt_model')().ready callback
-    (callback) ->
-      # {query} = require('./trnt_model')()
-
-      async.parallel [
-        (callback) -> 
-          Torrent.query().all().nodeify callback
-        (callback) -> 
-          async.waterfall [
-            (callback) -> 
-              api('torrent-get', {fields: ['hashString', 'id']})
-                .nodeify callback
-            (result, callback) ->
-              if result.result is 'success'
-                callback null, result.arguments.torrents
-              else
-                callback result
-          ], callback
-          
-      ], callback
-
-    ([dbItems, trntInfos], callback) ->
-      # {connection} = require('./trnt_model')()
-      # torrentHashes = _.pluck trntInfos, 'hashString'
-
-      toRemoveItems = []
-      toUpdateIds   = []
-
-      for dbItem in dbItems
-        torrentInfo = _.findWhere trntInfos, {hashString: dbItem.hash}
-        console.log 'we found', torrentInfo
-        if torrentInfo
-          toUpdateIds.push {item: dbItem, update: {t_id: torrentInfo.id}}
+  Q.all([
+    Torrent.query().all()
+    api('torrent-get', {fields: ['hashString', 'id']})
+      .then (result) ->
+        if result.result is 'success'
+          result.arguments.torrents
         else
-          toRemoveItems.push dbItem
-      
-      async.parallel [
-        (callback) ->
-          async.each toRemoveItems, (item, callback) ->
-            item.delete().nodeify callback
-          , callback
-        (callback) ->
-          async.each toUpdateIds, (item, callback) ->
-            item.item.update(item.update).nodeify callback
-          , callback
-      ], callback
+          throw new Error result
 
-    (result, callback) ->
-      Torrent.query().all().nodeify callback
-      # {query} = require('./trnt_model')()
-      # query.all callback
-    # (items, callback) ->
-    #   console.log 'synced', items
-    #   callback null, items
-  ], callback
+  ])
+  .spread (dbItems, trntInfos) ->
+    toRemoveItems = []
+    toUpdateIds   = []
 
-module.exports = -> syncPromise()
+    for dbItem in dbItems
+      torrentInfo = _.findWhere trntInfos, {hashString: dbItem.hash}
+      console.log 'we found', torrentInfo
+      if torrentInfo
+        toUpdateIds.push {item: dbItem, update: {t_id: torrentInfo.id}}
+      else
+        toRemoveItems.push dbItem
+
+    removeQ = Q.all (item.$delete() for item in toRemoveItems)
+    updateQ = Q.all (item.item.$update(item.update) for item in toUpdateIds)
+    Q.all [removeQ, updateQ]
+
+  .then ->
+    Torrent.query().all()
+
+module.exports = syncPromise
