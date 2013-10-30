@@ -1,26 +1,25 @@
-async = require 'async'
-api   = require './api'
-_     = require 'underscore'
-Q     = require 'q'
+async   = require 'async'
+api     = require './api'
+_       = require 'underscore'
+Q       = require 'q'
+Torrent = require '../db/torrent'
 
 syncPromise = Q.denodeify (callback) ->
 
   async.waterfall [
+    # (callback) ->
+    #   require('./trnt_model')().ready callback
     (callback) ->
-      require('./trnt_model')().ready callback
-    (callback) ->
-      {query} = require('./trnt_model')()
+      # {query} = require('./trnt_model')()
 
       async.parallel [
-        (callback) -> query.all callback
+        (callback) -> 
+          Torrent.query().all().nodeify callback
         (callback) -> 
           async.waterfall [
             (callback) -> 
               api('torrent-get', {fields: ['hashString', 'id']})
-                .then (result) ->
-                  callback null, result
-                , (error) ->
-                  callback error
+                .nodeify callback
             (result, callback) ->
               if result.result is 'success'
                 callback null, result.arguments.torrents
@@ -31,7 +30,7 @@ syncPromise = Q.denodeify (callback) ->
       ], callback
 
     ([dbItems, trntInfos], callback) ->
-      {connection} = require('./trnt_model')()
+      # {connection} = require('./trnt_model')()
       # torrentHashes = _.pluck trntInfos, 'hashString'
 
       toRemoveItems = []
@@ -48,17 +47,18 @@ syncPromise = Q.denodeify (callback) ->
       async.parallel [
         (callback) ->
           async.each toRemoveItems, (item, callback) ->
-            item.delete connection, callback
+            item.delete().nodeify callback
           , callback
         (callback) ->
           async.each toUpdateIds, (item, callback) ->
-            item.item.update connection, item.update, callback
+            item.item.update(item.update).nodeify callback
           , callback
       ], callback
 
     (result, callback) ->
-      {query} = require('./trnt_model')()
-      query.all callback
+      Torrent.query().all().nodeify callback
+      # {query} = require('./trnt_model')()
+      # query.all callback
     # (items, callback) ->
     #   console.log 'synced', items
     #   callback null, items

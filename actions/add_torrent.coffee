@@ -1,11 +1,13 @@
 async = require 'async'
-_     = require 'underscore'
+_     = require 'lodash'
 Q     = require 'q'
+Torrent = require '../db/torrent'
 
-createTorrent = Q.denodeify (params, torrentInfo, torrentUrl, title, callback) ->
-  {model, connection} = require('./trnt_model')()
 
-  newTorrent = new model
+createTorrent = (params, torrentInfo, torrentUrl, title) ->
+  # {model, connection} = require('./trnt_model')()
+
+  newTorrent = new Torrent
     t_id          : torrentInfo.id
     hash          : torrentInfo.hashString
     name          : torrentInfo.name
@@ -14,7 +16,7 @@ createTorrent = Q.denodeify (params, torrentInfo, torrentUrl, title, callback) -
     download_dir  : params.download_dir
     checked_at    : new Date
 
-  newTorrent.save(connection, callback)
+  newTorrent.save()
 
 module.exports = (torrentUrl, params) ->
   params = {} unless params
@@ -31,7 +33,7 @@ module.exports = (torrentUrl, params) ->
   .then( (torrentInfo) ->
     Q.all([
       require('./get_torrent_title') torrentUrl
-      require('./trnt_model')().readyQ()
+      # require('./trnt_model')().readyQ()
     ]).spread (title) ->
       return [torrentInfo, torrentUrl, title]
   )

@@ -3,10 +3,10 @@ config = require "../config"
 Q      = require 'q'
 _      = require 'underscore'
 
-updateInstace = Q.denodeify (dbItemInstance, data, callback) ->
-  {connection} = require('./trnt_model')()
+updateInstace = (dbItemInstance, data) ->
+  # {connection} = require('./trnt_model')()
   console.log 'updating data', data
-  dbItemInstance.update connection, data, callback
+  dbItemInstance.update(data)
 
 checkItem = (dbItemInstance) ->
   console.log 'checking item', dbItemInstance.tracker_title
@@ -27,8 +27,9 @@ checkItem = (dbItemInstance) ->
 checkNow = () ->
   console.log 'checking for new torrents...'
 
-  require('./trnt_model')().readyQ()
-    .then(require('./sync_torrents'))
+  # require('./trnt_model')().readyQ()
+  #   .then(require('./sync_torrents'))
+  require('./sync_torrents')
     .then( (items) ->
       Q.all (checkItem item for item in items)
     )
