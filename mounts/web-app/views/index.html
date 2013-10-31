@@ -8,22 +8,48 @@
   
 
   <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span8 offset2">
 
-    <table class="table table-striped">
-      <tr ng-repeat="torrent in torrents">
-        <td>{{torrent.tracker_title}}</td>
-        <td>{{torrent.checked_at}}</td>
-      </tr>
-    </table>
+        <table class="table table-striped">
+          <tr ng-repeat="torrent in torrents">
+            <td>{{torrent.tracker_title}}</td>
+            <td>{{torrent.checked_at}}</td>
+            <td>
 
+              <li class="dropdown">
+                <a class="dropdown-toggle">
+                  Action
+                </a>
+                <ul class="dropdown-menu">
+                  <li ng-repeat="(action, title) in actions">
+                    <a ng-click="{{action}}($parent.$index)">{{title}}</a>
+                  </li>
+                </ul>
+              </li>
 
-    <form class="form-search" ng-submit="addTorrent()">
-      <div class="input-append">
-        <input type="text" ng-model="torrentUrl" class="span6 search-query">
-        <button type="submit" class="btn">Add Torrent</button>
+            </td>
+          </tr>
+        </table>
+
       </div>
-      
-    </form>
+
+    </div>
+
+    <div class="row-fluid">
+
+      <div class="span8 offset2">
+        <form class="form-search" ng-submit="addTorrent()">
+          <div class="input-append">
+            <input type="text" ng-model="torrentUrl" class="span12 search-query">
+            <button type="submit" class="btn">Add Torrent</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+
+
 
   </div>
 

@@ -1,9 +1,16 @@
-trackerApp = angular.module('trackerApp', ['trackerServices'])
+trackerApp = angular.module('trackerApp', ['trackerServices', 'ui.bootstrap'])
 
 class TrackerListCtl
   constructor: ($scope, Torrent) ->
     $scope.torrents = []
     $scope.torrents = Torrent.query()
+
+    $scope.actions = 
+      check: "Check now"
+      delete: "Delete"
+
+    $scope.check = (index) ->
+      console.log 'checking', index
 
     $scope.addTorrent = ->
       newTorrent = new Torrent url: $scope.torrentUrl, tracker_title: $scope.torrentUrl
@@ -15,5 +22,12 @@ class TrackerListCtl
         $scope.torrents.splice $scope.torrents.indexOf(newTorrent), 1
 
 
+# class DropdownCtrl
+#   constructor: ($scope) ->
+#     $scope.items = [
+#       {title: "Check now", action: 'check'}
+#       {title: "Delete", action: 'delete'}
+#     ]
 
 trackerApp.controller 'TrackerListCtl', ['$scope', 'Torrent', TrackerListCtl]
+# trackerApp.controller 'DropdownCtrl', ['$scope', DropdownCtrl]
