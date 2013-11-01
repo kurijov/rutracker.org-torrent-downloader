@@ -26,20 +26,46 @@ class Model
 
     return instance
 
-  @findById: (id) ->
-    Q.ninvoke(@persistConstructor(), 'findById', id)
-      .then (item) =>
-        if item
-          new @ item
-        else
-          throw new Error "Not found #{id}"
+  @getById: (id) ->
+    db.then (connection) =>
+      Q.ninvoke(@persistConstructor(), 'getById', connection, id)
+        .then (item) =>
+          if item
+            new @ item
+          else
+            throw new Error "Not found #{id}"
 
   @query: ->
-    all: =>
-      db
-        .then (connection) =>
-          Q.ninvoke (@persistConstructor()).using(connection), 'all'
-        .then (items) =>
-          (new (@) item for item in items)
+    new Query @
+    # where: -> 
+    # all: =>
+    #   db
+    #     .then (connection) =>
+    #       Q.ninvoke (@persistConstructor()).using(connection), 'all'
+    #     .then (items) =>
+    #       (new (@) item for item in items)
+
+class Query 
+  constructor: (@modelConstructor) -> 
+    @query = db
+      .then (connection) =>
+        @modelConstructor.persistConstructor().using connection
+
+  where: (params...) ->
+    @query.then (query) ->
+      query.apply query, params
+    @
+
+  all: ->
+    @query
+      .then (query) ->
+        console.log 'got then'
+        Q.ninvoke query, 'all'
+      .then (items) =>
+        console.log 'got items'
+        (new (@modelConstructor) item for item in items)
+      .fail (error) =>
+        console.log "Error at query: #{@modelConstructor.name}", error
+        throw error
 
 module.exports = Model

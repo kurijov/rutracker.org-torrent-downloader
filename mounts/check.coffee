@@ -4,11 +4,12 @@ Torrent = require('../db/torrent')
 
 app.get '/torrents/check/:id', (req, res, next) ->
   if req.param('id')
-    Torrent.findById(req.param('id'))
+    Torrent.getById(req.param('id'))
       .then (item) ->
+        console.log 'item to check', item
         require('../actions/torrent_checker').checkItem(item)
       .then ->
-        Torrent.findById(req.param('id'))
+        Torrent.getById(req.param('id'))
       .fail (error) ->
         res.status 500
         error

@@ -22,4 +22,11 @@ app.use connectAssets({
 app.get '/', (req, res) ->
   res.render 'index.html'
 
+require('../../db/config').get('torrent/rutracker.org').then (config) ->
+  console.log 'ok', config
+  config.user = "hello"
+  config.password = "there"
+  config.$save()
+.done()
+
 module.exports = app

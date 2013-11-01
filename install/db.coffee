@@ -1,6 +1,8 @@
 db = require '../db'
+Q  = require 'q'
 
-DDL = """
+DDLs = []
+DDLs.push """
   CREATE TABLE IF NOT EXISTS `Torrents` (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     t_id INT,
@@ -13,11 +15,22 @@ DDL = """
   );
 """
 
+DDLs.push """
+  CREATE TABLE IF NOT EXISTS `Config` (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    path TEXT,
+    value TEXT
+  );
+"""
+
+
 db
   .then (connection) ->
-    connection.runSqlAll DDL, (error) ->
-      if error
-        console.log error
-      else
-        console.log "Installed db: ok"
+    Q.all (Q.ninvoke connection, 'runSqlAll', ddl for ddl in DDLs)
+  .then ->
+    console.log "DB: installed"
+  , (error) ->
+    console.log 'Failed to install DB'
+    console.log error
+    throw error
   .done()
