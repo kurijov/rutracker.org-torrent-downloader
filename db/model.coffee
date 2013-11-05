@@ -6,11 +6,24 @@ class Model
   @persistConstructor: ->
     @persistModel
 
+  _transfer_getters_setters: (keys) ->
+
   constructor: (data) ->
     if data instanceof @constructor.persistConstructor()
       instance = data
     else
       instance = new (@constructor.persistConstructor()) data
+
+    # keys = _.keys @constructor.persistConstructor().columns
+
+    # _.each keys, (key) =>
+    #   @__defineGetter__ key, ->
+    #     instance[key]
+
+    #   @__defineSetter__ key, (value) ->
+    #     instance[key] = value
+
+
 
     proxyMethods = ['save', 'delete', 'update']
     _.each proxyMethods, (method) ->
@@ -37,13 +50,6 @@ class Model
 
   @query: ->
     new Query @
-    # where: -> 
-    # all: =>
-    #   db
-    #     .then (connection) =>
-    #       Q.ninvoke (@persistConstructor()).using(connection), 'all'
-    #     .then (items) =>
-    #       (new (@) item for item in items)
 
 class Query 
   constructor: (@modelConstructor) -> 
@@ -53,16 +59,27 @@ class Query
 
   where: (params...) ->
     @query.then (query) ->
-      query.apply query, params
+      query.where.apply query, params
     @
+
+  first: ->
+    @query
+      .then (query) ->
+        Q.ninvoke query, 'first'
+      .then (item) =>
+        if item
+          new (@modelConstructor) item
+        else
+          return null
+      .fail (error) =>
+        console.log "Error at query: #{@modelConstructor.name}", error
+        throw error
 
   all: ->
     @query
       .then (query) ->
-        console.log 'got then'
         Q.ninvoke query, 'all'
       .then (items) =>
-        console.log 'got items'
         (new (@modelConstructor) item for item in items)
       .fail (error) =>
         console.log "Error at query: #{@modelConstructor.name}", error

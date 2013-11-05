@@ -24,9 +24,13 @@ app.get '/', (req, res) ->
 
 require('../../db/config').get('torrent/rutracker.org').then (config) ->
   console.log 'ok', config
-  config.user = "hello"
-  config.password = "there"
-  config.$save()
+  console.log 'ok', config.user
+  console.log 'ok', config.password
+
+  # config.user = "hello"
+  # config.password = "there"
+  # config.$save().then ->
+  #   console.log 'done'
 .done()
 
 module.exports = app
