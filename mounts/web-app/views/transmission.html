@@ -4,27 +4,40 @@
   [[css('css/bootstrap/bootstrap.css')]]
 </head>
 <body>
-  
+  {% include "./_navbar.html" %}
 
   <div class="container-fluid">
     <div class="row-fluid">
       <div class="span8 offset2">
+        {% if error %}
 
-        <p>
-          There is a problem with transmission, check host settings.
-        </p>
+          <p>
+            There is a problem with transmission....
+          </p>
 
-        <p>
-          Check that transmission app is running
-        </p>
+          {% if error == 'no_host' %}
+            <p>
+              You didnt set host setting for transmission yet. Set one.
+            </p>
+          {% endif %}
 
-        <p>
-          Check Web API of transmission is turned on
-        </p>
+          {% if error == 'no_connection' %}
 
-        <p>
-          Hit "Save" when you are done
-        </p>
+            <p>
+              Check that transmission app is running
+            </p>
+
+            <p>
+              Check Web API of transmission is turned on
+            </p>
+
+          {% endif %}
+
+          <p>
+            Hit "Save" when you are done.
+          </p>
+
+        {% endif %}
 
         <form class="form-horizontal" method="post">
 

@@ -1,9 +1,13 @@
 app    = require './main'
 
-app.all '/transmission', require('./_config_transmission')
+app.all '/transmission*', require('./_config_transmission')
 
-app.get '/transmission', (req, res) ->
-  data = host: req.transmission.host
+app.get '/transmission/:error?', (req, res) ->
+  data = 
+    host: req.transmission.host
+    page: 'transmission'
+    error: req.param('error')
+
   res.render 'transmission.html', data
 
 app.post '/transmission', (req, res) ->

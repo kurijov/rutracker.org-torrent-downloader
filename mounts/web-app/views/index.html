@@ -5,16 +5,7 @@
   [[css('css/bootstrap/bootstrap.css')]]
 </head>
 <body ng-controller="TrackerListCtl">
-  <div class="navbar">
-    <div class="navbar-inner">
-      <a class="brand" href="#">TD</a>
-      <ul class="nav pull-right">
-        <li class="active"><a href="/">Torrents</a></li>
-        <li><a href="/transmission">Transmission</a></li>
-        <li><a href="/tracker">Tracker</a></li>
-      </ul>
-    </div>
-  </div>
+  {% include "./_navbar.html" %}
 
   <div class="container-fluid">
     <div class="row-fluid">

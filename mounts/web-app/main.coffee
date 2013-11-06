@@ -21,6 +21,6 @@ app.use connectAssets({
 
 app.get '/', require('./_config_transmission'), require('./_check_transmission')
 app.get '/', (req, res) ->
-  res.render 'index.html'
+  res.render 'index.html', {page: 'torrents'}
 
 module.exports = app
