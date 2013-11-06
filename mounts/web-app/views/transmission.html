@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  [[css('css/bootstrap/bootstrap.css')]]
+</head>
+<body>
+  
+
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span8 offset2">
+
+        <p>
+          There is a problem with transmission, check host settings.
+        </p>
+
+        <p>
+          Check that transmission app is running
+        </p>
+
+        <p>
+          Check Web API of transmission is turned on
+        </p>
+
+        <p>
+          Hit "Save" when you are done
+        </p>
+
+        <form class="form-horizontal" method="post">
+
+          <div class="control-group">
+            <label class="control-label" for="inputEmail">Host</label>
+            <div class="controls">
+              <input type="text" id="inputEmail" name="host" placeholder="http://localhost:9091" value="[[host]]">
+            </div>
+          </div>
+          
+          <div class="control-group">
+            <div class="controls">
+              <button type="submit" class="btn">Save</button>
+            </div>
+          </div>
+        </form>
+
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+ 
+</body>
+</html>
