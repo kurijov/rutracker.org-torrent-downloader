@@ -11,7 +11,8 @@ DDLs.push """
     tracker_title TEXT,
     torrent_url TEXT,
     download_dir TEXT,
-    checked_at DATETIME
+    checked_at DATETIME,
+    in_job INT DEFAULT 0
   );
 """
 

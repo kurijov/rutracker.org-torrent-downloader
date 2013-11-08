@@ -11,31 +11,31 @@
       <div class="span8 offset2">
         {% if error %}
 
-          <p>
-            There is a problem with transmission....
-          </p>
+          <div class="alert">
+            There is a problem with <strong>transmission</strong>....
+          </div>
 
           {% if error == 'no_host' %}
-            <p>
+            <div class="alert">
               You didnt set host setting for transmission yet. Set one.
-            </p>
+            </div>
           {% endif %}
 
           {% if error == 'no_connection' %}
 
-            <p>
+            <div class="alert">
               Check that transmission app is running
-            </p>
+            </div>
 
-            <p>
+            <div class="alert">
               Check Web API of transmission is turned on
-            </p>
+            </div>
 
           {% endif %}
 
-          <p>
+          <div class="alert alert-success">
             Hit "Save" when you are done.
-          </p>
+          </div>
 
         {% endif %}
 

@@ -17,7 +17,9 @@
             <td>{{torrent.checked_at | date:'yyyy-MM-dd HH:mm:ss'}}</td>
             <td>
 
-              <li class="dropdown">
+              <i class="icon-time" ng-show="{{!!torrent.in_job == true}}"></i>
+
+              <li class="dropdown" ng-show="{{!!torrent.in_job == false}}">
                 <a class="dropdown-toggle">
                   Action
                 </a>

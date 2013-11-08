@@ -19,6 +19,8 @@ app.use connectAssets({
   src: __dirname + '/public'
 })
 
+app.use(express.static(__dirname + '/public'))
+
 app.get '/', require('./_config_transmission'), require('./_check_transmission')
 app.get '/', (req, res) ->
   res.render 'index.html', {page: 'torrents'}

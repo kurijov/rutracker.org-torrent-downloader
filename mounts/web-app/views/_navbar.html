@@ -1,10 +1,10 @@
 <div class="navbar">
   <div class="navbar-inner">
-    <a class="brand" href="#">TD</a>
+    <a class="brand" href="/">TD</a>
     <ul class="nav pull-right">
       <li class="{% if page == 'torrents' %}active{% endif %}"><a href="/">Torrents</a></li>
       <li class="{% if page == 'transmission' %}active{% endif %}"><a href="/transmission">Transmission</a></li>
-      <li><a href="/tracker">Tracker</a></li>
+      <li class="{% if page == 'tracker' %}active{% endif %}"><a href="/tracker">Tracker</a></li>
     </ul>
   </div>
 </div>
