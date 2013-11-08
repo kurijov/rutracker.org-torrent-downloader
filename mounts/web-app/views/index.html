@@ -17,15 +17,15 @@
             <td>{{torrent.checked_at | date:'yyyy-MM-dd HH:mm:ss'}}</td>
             <td>
 
-              <i class="icon-time" ng-show="{{!!torrent.in_job == true}}"></i>
+              <i class="icon-time" ng-show="torrent.in_job"></i>
 
-              <li class="dropdown" ng-show="{{!!torrent.in_job == false}}">
+              <li class="dropdown" ng-hide="torrent.in_job">
                 <a class="dropdown-toggle">
                   Action
                 </a>
                 <ul class="dropdown-menu">
                   <li ng-repeat="(action, title) in actions">
-                    <a ng-click="torrent.${{action}}()">{{title}}</a>
+                    <a ng-click="{{action}}($parent.$index)">{{title}}</a>
                   </li>
                 </ul>
               </li>

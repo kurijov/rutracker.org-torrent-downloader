@@ -11,6 +11,7 @@ Torrent = persist.define "Torrent",
   torrent_url   : type.STRING
   download_dir  : type.STRING
   checked_at    : type.DATETIME
+  in_job        : type.INTEGER
 
 class TorrentModel extends require('./model')
   @persistModel: Torrent
