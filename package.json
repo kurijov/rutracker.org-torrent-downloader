@@ -27,7 +27,8 @@
     "connect-assets": "~3.0.0-alpha1",
     "swig": "~1.1.0",
     "lodash": "~2.2.1",
-    "less": "~1.5.0"
+    "less": "~1.5.0",
+    "read-torrent": "~0.2.0"
   },
   "scripts": {
     "start": "./node_modules/forever/bin/forever start -o ./logfile.log index.js",
