@@ -5,8 +5,10 @@ app = express()
 
 app.use(express.logger())
 app.use(express.bodyParser())
+app.use(express.methodOverride())
 
 app.use require('./mounts/add_torrent')
+app.use require('./mounts/remove_torrent')
 app.use require('./mounts/list')
 app.use require('./mounts/check')
 app.use require('./mounts/web-app')

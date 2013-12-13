@@ -24,7 +24,6 @@ authorizeAtTracker = Q.denodeify (config, callback) ->
     jar                : cookies
     url                : authUrl
   }, (error, response, bodyResult) ->
-    # console.log error, bodyResult.indexOf('kurijov'), response.statusCode, '<<<authorized'
     callback error
 
 __downloadFile = Q.denodeify (config, torrentId, callback) ->

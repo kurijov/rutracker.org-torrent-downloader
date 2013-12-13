@@ -9,11 +9,14 @@ class TrackerListCtl
       check: "Check now"
       delete: "Delete"
 
-    $scope.check = (index) ->
-      console.log index
-      
+    $scope.check = (index) ->     
       $scope.torrents[index].in_job = true
       $scope.torrents[index].$check()
+
+    $scope.delete = (index) ->
+      $scope.torrents[index].in_job = true
+      $scope.torrents[index].$remove()
+      $scope.torrents.splice index, 1
 
     $scope.addTorrent = ->
       newTorrent = new Torrent url: $scope.torrentUrl, tracker_title: $scope.torrentUrl

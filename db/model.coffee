@@ -14,16 +14,6 @@ class Model
     else
       instance = new (@constructor.persistConstructor()) data
 
-    # keys = _.keys @constructor.persistConstructor().columns
-
-    # _.each keys, (key) =>
-    #   @__defineGetter__ key, ->
-    #     instance[key]
-
-    #   @__defineSetter__ key, (value) ->
-    #     instance[key] = value
-
-
 
     proxyMethods = ['save', 'delete', 'update']
     _.each proxyMethods, (method) ->
