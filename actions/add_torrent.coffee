@@ -5,7 +5,6 @@ Torrent = require '../db/torrent'
 
 
 createTorrent = (params, torrentInfo, torrentUrl, title) ->
-  # {model, connection} = require('./trnt_model')()
 
   newTorrent = new Torrent
     t_id          : torrentInfo.id
@@ -33,7 +32,6 @@ module.exports = (torrentUrl, params) ->
   .then( (torrentInfo) ->
     Q.all([
       require('./get_torrent_title') torrentUrl
-      # require('./trnt_model')().readyQ()
     ]).spread (title) ->
       return [torrentInfo, torrentUrl, title]
   )
