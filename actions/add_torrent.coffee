@@ -26,7 +26,9 @@ module.exports = (torrentUrl, params) ->
   ])
   .spread( (transmissionSettings, torrentPath) ->
     console.log 'adding', torrentPath
-    params = _.defaults params, {download_dir: transmissionSettings['download-dir']}
+    params = _.defaults params, {
+      download_dir: transmissionSettings['download-dir']
+    }
     require('./api_add_torrent') torrentPath, params.download_dir
   )
   .then( (torrentInfo) ->

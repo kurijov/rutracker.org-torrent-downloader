@@ -2,6 +2,8 @@ Q       = require 'q'
 db      = require './index'
 _       = require 'lodash'
 
+E_COMMON = require('../errors').COMMON
+
 class Model
   @persistConstructor: ->
     @persistModel
@@ -36,7 +38,7 @@ class Model
           if item
             new @ item
           else
-            throw new Error "Not found #{id}"
+            throw E_COMMON.NOT_FOUND()
 
   @query: ->
     new Query @
@@ -63,7 +65,7 @@ class Query
           return null
       .fail (error) =>
         console.log "Error at query: #{@modelConstructor.name}", error
-        throw error
+        throw E_COMMON.FIRST_FAIL()
 
   all: ->
     @query
@@ -73,6 +75,6 @@ class Query
         (new (@modelConstructor) item for item in items)
       .fail (error) =>
         console.log "Error at query: #{@modelConstructor.name}", error
-        throw error
+        throw E_COMMON.ALL_FAIL()
 
 module.exports = Model

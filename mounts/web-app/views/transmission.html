@@ -42,9 +42,16 @@
         <form class="form-horizontal" method="post" action="/transmission">
 
           <div class="control-group">
-            <label class="control-label" for="inputEmail">Host</label>
+            <label class="control-label" for="tr-host">Host</label>
             <div class="controls">
-              <input type="text" id="inputEmail" name="host" placeholder="http://localhost:9091" value="[[host]]">
+              <input type="text" id="tr-host" name="host" placeholder="http://localhost:9091" value="[[host]]">
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="tr-download">Download folder</label>
+            <div class="controls">
+              <input type="text" id="tr-download" name="download_dir" placeholder="By default it is your Home folder" value="[[download_dir]]">
             </div>
           </div>
           

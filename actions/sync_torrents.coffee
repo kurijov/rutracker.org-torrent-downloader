@@ -22,7 +22,7 @@ syncPromise = () ->
 
     for dbItem in dbItems
       torrentInfo = _.findWhere trntInfos, {hashString: dbItem.hash}
-      console.log 'we found', torrentInfo
+
       if torrentInfo
         toUpdateIds.push {item: dbItem, update: {t_id: torrentInfo.id}}
       else

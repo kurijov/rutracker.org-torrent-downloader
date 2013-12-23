@@ -10,6 +10,10 @@
   <div class="container-fluid">
     <div class="row-fluid">
       <div class="span8 offset2">
+        <div ng-hide="torrents.length">
+          There are no torrents yet. Add one from rutracker.org<br />
+          For instance <code>http://rutracker.org/forum/viewtopic.php?t=4541800</code>
+        </div>
 
         <table class="table table-striped">
           <tr ng-repeat="torrent in torrents">
