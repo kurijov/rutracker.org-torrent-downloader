@@ -13,7 +13,6 @@ app.post '/torrents', transmissionConfig, (req, res, next) ->
       res.status 500
       error
     .done (result) ->
-      console.log 'giving response', result
       res.json result
 
 module.exports = app

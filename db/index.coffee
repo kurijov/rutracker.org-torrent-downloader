@@ -1,8 +1,10 @@
-Q = require 'q'
+Q       = require 'q'
 persist = require 'persist'
+
+config = require('../config')
 
 module.exports = Q.ninvoke persist, 'connect', {
   driver   : 'sqlite3',
-  filename : __dirname + '/trntsdb.db',
+  filename : config.db.filename,
   trace    : no
 }

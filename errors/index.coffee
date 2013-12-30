@@ -6,27 +6,16 @@ TError = require('./terror')
 
 errorsFolder = __dirname + '/list'
 
-listOfModules = _.filter fs.readdirSync(errorsFolder), (moduleName) ->
+listOfModules = _.chain(fs.readdirSync(errorsFolder)).filter((moduleName) ->
   [baseName, ext] = moduleName.split('.')
   if ext in ['js', 'coffee']
     yes
   else
     no
-
-# listOfModules = [
-#   'common'
-#   'stripe'
-#   'user'
-#   'votable'
-#   'connect'
-#   'blot'
-#   'queue'
-#   'topic'
-#   'pixlnet'
-#   'photo'
-#   'g_change_log'
-#   'comment'
-# ]
+  ).map (moduleName) ->
+    [baseName, ext] = moduleName.split('.')
+    baseName
+  .value()
 
 class ErrorManager
   constructor: ->
@@ -40,6 +29,7 @@ class ErrorManager
 
   _load: ->
     _.each listOfModules, (moduleName) =>
+      console.log 'registering codes for ' + moduleName
       @_attach moduleName, require(errorsFolder + "/#{moduleName}")
 
   _attach: (namespace, errorsList) ->

@@ -1,7 +1,9 @@
 node_modules
 .cookies
 trntsdb.db
+db/storage/*
 logfile.log
 config.coffee
 files/*
 !files/download.sh
+!db/storage/README.md

@@ -4,7 +4,7 @@ Config      = require('../db/config')
 request     = require('request')
 fs          = require 'fs'
 readTorrent = Q.denodeify require('read-torrent')
-
+E_TRACKER   = require('../errors').TRACKER
 
 url     = require 'url'
 
@@ -67,7 +67,7 @@ _downloadFile = (config, torrentId) ->
         filePath
     .fail (error) ->
       console.log 'failed to load torrent file', error
-      throw 302
+      throw E_TRACKER.CANT_AUTHORIZE()
 
 
 
@@ -79,7 +79,7 @@ downloadTorrent = (config, urlToTorrentTheme) ->
 
   _downloadFile(config, torrentId)
     .fail (error) ->
-      if error is 302
+      if error and E_TRACKER.CANT_AUTHORIZE.is(error)
         authorizeAtTracker(config).then ->
           _downloadFile config, torrentId
       else
@@ -93,4 +93,4 @@ module.exports = (urlToTorrentTheme) ->
       downloadTorrent config, urlToTorrentTheme
     .fail (error) ->
       console.log 'failed to download', error
-      throw new Error error
+      throw error
