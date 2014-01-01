@@ -1,8 +1,7 @@
 request = require 'request'
-config  = require '../config'
 Q       = require 'q'
 
-Config  = require '../db/config'
+Config  = require '../../db/config'
 
 jar     = request.jar()
 

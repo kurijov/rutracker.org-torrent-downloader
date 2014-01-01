@@ -1,7 +1,8 @@
-async = require 'async'
-_     = require 'lodash'
-Q     = require 'q'
-Torrent = require '../db/torrent'
+async        = require 'async'
+_            = require 'lodash'
+Q            = require 'q'
+Torrent      = require '../db/torrent'
+Transmission = new (require('../downloaders/transmission'))
 
 
 createTorrent = (params, torrentInfo, torrentUrl, title) ->
@@ -21,7 +22,7 @@ module.exports = (torrentUrl, params) ->
   params = {} unless params
 
   Q.all([
-    require('./get_session')
+    transmission.get_session()
     require('./download_torrent') torrentUrl
   ])
   .spread( (transmissionSettings, torrentPath) ->
@@ -29,7 +30,7 @@ module.exports = (torrentUrl, params) ->
     params = _.defaults params, {
       download_dir: transmissionSettings['download-dir']
     }
-    require('./api_add_torrent') torrentPath, params.download_dir
+    transmission.add_torrent torrentPath, params.download_dir
   )
   .then( (torrentInfo) ->
     Q.all([
