@@ -2,8 +2,10 @@ fs  = require 'fs'
 api = require './transmission/api'
 
 class Transmission
+  _api: api
+
   get_session: ->
-    api('session-get', {})
+    @_api('session-get', {})
       .then( (result) ->
         if result.result is 'success'
           result.arguments
@@ -20,7 +22,7 @@ class Transmission
       "download-dir" : download_dir
     }
 
-    api("torrent-add", addData)
+    @_api("torrent-add", addData)
       .then( (result) ->
         if result.result is 'success'
           return result.arguments['torrent-added']

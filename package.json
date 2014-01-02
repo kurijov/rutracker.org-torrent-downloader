@@ -28,7 +28,12 @@
     "swig": "~1.1.0",
     "lodash": "~2.2.1",
     "less": "~1.5.0",
-    "read-torrent": "~0.2.0"
+    "read-torrent": "~0.2.0",
+    "mocha": "~1.16.2",
+    "chai": "~1.8.1",
+    "sinon": "~1.7.3",
+    "chai-as-promised": "~4.1.0",
+    "mocha-as-promised": "~2.0.0"
   },
   "scripts": {
     "start": "./node_modules/forever/bin/forever start -o ./logfile.log index.js",

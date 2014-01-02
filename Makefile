@@ -3,4 +3,4 @@ test:
 		--reporter list \
 		--compilers coffee:coffee-script \
 		--recursive ./tests \
-		--require should
+		--require ./tests/fixture.coffee
