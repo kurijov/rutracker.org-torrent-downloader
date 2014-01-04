@@ -29,7 +29,7 @@ class ErrorManager
 
   _load: ->
     _.each listOfModules, (moduleName) =>
-      console.log 'registering codes for ' + moduleName
+      # console.log 'registering codes for ' + moduleName
       @_attach moduleName, require(errorsFolder + "/#{moduleName}")
 
   _attach: (namespace, errorsList) ->

@@ -2,7 +2,8 @@ async        = require 'async'
 _            = require 'lodash'
 Q            = require 'q'
 Torrent      = require '../db/torrent'
-Transmission = new (require('../downloaders/transmission'))
+transmission = new (require('../downloaders/transmission'))
+rutracker    = new (require('../trackers/rutracker'))
 
 
 createTorrent = (params, torrentInfo, torrentUrl, title) ->
@@ -23,7 +24,7 @@ module.exports = (torrentUrl, params) ->
 
   Q.all([
     transmission.get_session()
-    require('./download_torrent') torrentUrl
+    rutracker.download_torrent(torrentUrl)
   ])
   .spread( (transmissionSettings, torrentPath) ->
     console.log 'adding', torrentPath
@@ -34,7 +35,7 @@ module.exports = (torrentUrl, params) ->
   )
   .then( (torrentInfo) ->
     Q.all([
-      require('./get_torrent_title') torrentUrl
+      rutracker.get_torrent_title torrentUrl
     ]).spread (title) ->
       return [torrentInfo, torrentUrl, title]
   )

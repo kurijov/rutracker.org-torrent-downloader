@@ -30,4 +30,16 @@ class Transmission
           throw new Error result.result
       )
 
+  torrent_get: () ->
+    @_api('torrent-get', {fields: ['hashString', 'id']})
+      .then (result) ->
+        if result.result is 'success'
+          result.arguments.torrents
+        else
+          throw new Error result
+
+  torrent_remove: (torrentId) ->
+    apiData = {ids: [torrentId], "delete-local-data": yes}
+    @_api('torrent-remove', apiData)
+
 module.exports = Transmission

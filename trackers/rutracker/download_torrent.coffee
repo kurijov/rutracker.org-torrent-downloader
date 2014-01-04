@@ -1,16 +1,17 @@
 async       = require 'async'
 Q           = require 'q'
-Config      = require('../db/config')
+Config      = require('../../db/config')
 request     = require('request')
 fs          = require 'fs'
 readTorrent = Q.denodeify require('read-torrent')
-E_TRACKER   = require('../errors').TRACKER
+E_TRACKER   = require('../../errors').TRACKER
 
 url     = require 'url'
 
 cookies = request.jar()
 
 authorizeAtTracker = Q.denodeify (config, callback) ->
+  console.log "attempting to authorize at tracker with config", config
   authUrl  = "http://login.rutracker.org/forum/login.php"
 
   postData = 
@@ -40,7 +41,7 @@ __downloadFile = Q.denodeify (config, torrentId, callback) ->
 
   normalizePath = require('path').normalize
 
-  torrentFilePath = normalizePath __dirname + "/../files/file.t#{torrentId}.torrent"
+  torrentFilePath = normalizePath __dirname + "/../../files/file.t#{torrentId}.torrent"
 
   stream = fs.createWriteStream(torrentFilePath)
 

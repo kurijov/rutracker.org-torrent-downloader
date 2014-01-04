@@ -6,6 +6,8 @@ app.get '/torrents', (req, res, next) ->
     .fail (error) ->
       res.status 500
       error
-    .done (result) -> res.json result
+    .done (result) -> 
+      console.log 'responding with', result
+      res.json result
 
 module.exports = app

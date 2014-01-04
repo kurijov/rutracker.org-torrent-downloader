@@ -1,20 +1,18 @@
 async   = require 'async'
-api     = require './api'
+# api     = require './api'
 _       = require 'underscore'
 Q       = require 'q'
 Torrent = require '../db/torrent'
+
+transmission = new (require('../downloaders/transmission'))
+rutracker    = new (require('../trackers/rutracker'))
 
 syncPromise = () ->
 
   Q.all([
     Torrent.query().all()
-    api('torrent-get', {fields: ['hashString', 'id']})
-      .then (result) ->
-        if result.result is 'success'
-          result.arguments.torrents
-        else
-          throw new Error result
-
+    # api('torrent-get', {fields: ['hashString', 'id']})
+    transmission.torrent_get()
   ])
   .spread (dbItems, trntInfos) ->
     toRemoveItems = []
