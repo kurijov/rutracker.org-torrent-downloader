@@ -40,7 +40,7 @@ class Manager
   reload_torrent: (dbItemInstace) ->
     # require('./mail')(dbItemInstace)
     
-    Q(dbItemInstace.torrent_url).then(require('./download_torrent')))
+    Q(dbItemInstace.torrent_url).then(require('./download_torrent'))
       .then( (pathToTorrent) =>
         @transmission.add_torrent pathToTorrent, dbItemInstace.download_dir
       )

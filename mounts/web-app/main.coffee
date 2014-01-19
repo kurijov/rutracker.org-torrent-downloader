@@ -21,8 +21,25 @@ app.use connectAssets({
 
 app.use(express.static(__dirname + '/public'))
 
-app.get '/', require('./_config_transmission'), require('./_check_transmission')
+app.all '*', (req, res, next) ->
+  res.respond = (qPromise) ->
+    qPromise
+    .fail (error) ->
+      res.status 500
+      error
+    .done (result) -> 
+      console.log 'responding with', result
+      res.json result
+
+  next()
+
+app.all '*', (req, res, next) ->
+  req.manager = require('../../manager')
+  next()
+
 app.get '/', (req, res) ->
   res.render 'index.html', {page: 'torrents'}
 
 module.exports = app
+
+require './torrents'
