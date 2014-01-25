@@ -44,3 +44,4 @@ module.exports = app
 
 require './torrents'
 require './transmission'
+require './tracker'
