@@ -1,8 +1,12 @@
-fs  = require 'fs'
-api = require './transmission/api'
+fs     = require 'fs'
+api    = require './transmission/api'
+Config = require '../db/config'
 
 class Transmission
   _api: api
+
+  getConfig: -> Config.get 'transmission'
+
 
   get_session: ->
     @_api('session-get', {})

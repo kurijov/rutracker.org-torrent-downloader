@@ -12,11 +12,11 @@ app = express()
 
 app.engine 'html', swig.renderFile
 app.set 'view engine', 'html'
-app.set 'views', __dirname + '/views'
+app.set 'views', __dirname + '/../views'
 app.set 'view cache', (process.env.NODE_ENV is 'production')
 
 app.use connectAssets({
-  src: __dirname + '/public'
+  src: __dirname + '/../public'
 })
 
 app.use(express.static(__dirname + '/public'))
@@ -34,7 +34,7 @@ app.all '*', (req, res, next) ->
   next()
 
 app.all '*', (req, res, next) ->
-  req.manager = require('../../manager')
+  req.manager = require('../manager')
   next()
 
 app.get '/', (req, res) ->
@@ -43,3 +43,4 @@ app.get '/', (req, res) ->
 module.exports = app
 
 require './torrents'
+require './transmission'

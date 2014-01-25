@@ -16,6 +16,3 @@ app.post '/transmission', (req, res) ->
   req.transmissionConfig.download_dir = req.param('download_dir')
   req.transmissionConfig.$save().done ->
     res.redirect '/'
-
-
-module.exports = app
