@@ -1,3 +1,4 @@
+Path    = require 'path'
 express = require('express')
 swig    = require('swig')
 
@@ -12,14 +13,14 @@ app = express()
 
 app.engine 'html', swig.renderFile
 app.set 'view engine', 'html'
-app.set 'views', __dirname + '/../views'
+app.set 'views', Path.normalize(__dirname + '/../views')
 app.set 'view cache', (process.env.NODE_ENV is 'production')
 
 app.use connectAssets({
-  src: __dirname + '/../public'
+  src: Path.normalize(__dirname + '/../public')
 })
 
-app.use(express.static(__dirname + '/public'))
+app.use(express.static(__dirname + '/../public'))
 
 app.all '*', (req, res, next) ->
   res.respond = (qPromise) ->
