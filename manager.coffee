@@ -13,12 +13,20 @@ class Manager
 
   checkTorrents: ->
     @sync_torrents()
-    .then (items) ->
-      Q.all (checkItem item for item in items)
+    .then (items) =>
+      Q.all (@_check_torrent_item item for item in items)
     .then(require('./sync_torrents'))
 
+  check_torrent: (torrentId) ->
+    Torrent.getById(torrentId)
+      .then (item) =>
+        console.log 'item to check', item
+        @_check_torrent_item item
+      .then ->
+        Torrent.getById(torrentId)
+
   _check_torrent_item: (dbItemInstance) ->
-    @tracker.get_torrent_title(torrentUrl).then( (theNewTitle) =>
+    @tracker.get_torrent_title(dbItemInstance.torrent_url).then( (theNewTitle) =>
       p1 = if dbItemInstance.tracker_title isnt theNewTitle
         @reload_torrent(dbItemInstance)
       else
