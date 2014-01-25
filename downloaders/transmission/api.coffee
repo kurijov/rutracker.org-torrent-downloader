@@ -2,6 +2,7 @@ request = require 'request'
 Q       = require 'q'
 
 Config  = require '../../db/config'
+E_TRANSMISSION = require('../../errors').TRANSMISSION
 
 jar     = request.jar()
 
@@ -12,7 +13,7 @@ requestQ = (requestData) ->
   deferred = Q.defer()
 
   request requestData, (error, response, result) ->
-    return deferred.reject new Error error if error
+    return deferred.reject E_TRANSMISSION.CANT_QUERY() if error
 
     deferred.resolve {response, result}
 

@@ -40,7 +40,7 @@ class Transmission
         if result.result is 'success'
           result.arguments.torrents
         else
-          throw new Error result
+          throw result
 
   torrent_remove: (torrentId) ->
     apiData = {ids: [torrentId], "delete-local-data": yes}
