@@ -4,10 +4,14 @@ app.get '/torrents', (req, res, next) ->
   res.respond req.manager.sync_torrents()
 
 app.post '/torrents', (req, res, next) ->
-  torrentUrl    = req.param 'torrent_url'
+  torrentDescription    = req.param 'torrent_url'
 
-  res.respond req.manager.add_torrent(torrentUrl, {
-    download_dir: req.param('download_dir')
+  [stuff..., folder, url] = torrentDescription.match /(\{d:([^\}]+)\})?(.*)/
+
+  # folder = '' unless folder
+
+  res.respond req.manager.add_torrent(url, {
+    folder: folder
   })
 
 app.get '/torrents/check/:id', (req, res, next) ->
@@ -15,3 +19,6 @@ app.get '/torrents/check/:id', (req, res, next) ->
     res.respond req.manager.check_torrent req.param('id')
   else
     res.respond req.manager.checkTorrents()
+
+app.del '/torrents/:id', (req, res, next) ->
+  res.respond req.manager.remove_torrent(req.param('id'))

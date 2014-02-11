@@ -44,6 +44,8 @@ class Manager
         @transmission.torrent_remove(torrentDbInstance.t_id)
       .then ->
         torrentDbInstance.$delete()
+      .then -> 
+        {}
 
   reload_torrent: (dbItemInstace) ->
     dbItemInstace.lock()
@@ -69,7 +71,7 @@ class Manager
     .spread( (transmissionSettings, torrentPath, transmissionConfig) =>
       console.log 'adding', torrentPath
       params = _.defaults params, {
-        download_dir: transmissionConfig.download_dir
+        download_dir: transmissionConfig.download_dir + (params.folder or '')
       }, {
         download_dir: transmissionSettings['download-dir']
       }
