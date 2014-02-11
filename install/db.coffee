@@ -12,7 +12,8 @@ DDLs.push """
     torrent_url TEXT,
     download_dir TEXT,
     checked_at DATETIME,
-    in_job INT DEFAULT 0
+    in_job INT DEFAULT 0,
+    in_job_from DATETIME
   );
 """
 

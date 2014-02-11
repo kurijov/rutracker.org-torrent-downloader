@@ -46,9 +46,9 @@ class Manager
         torrentDbInstance.$delete()
 
   reload_torrent: (dbItemInstace) ->
-    # require('./mail')(dbItemInstace)
-    
-    Q(dbItemInstace.torrent_url).then(require('./download_torrent'))
+    dbItemInstace.lock()
+      .then =>
+        @tracker.download_torrent dbItemInstace.torrent_url
       .then( (pathToTorrent) =>
         @transmission.add_torrent pathToTorrent, dbItemInstace.download_dir
       )

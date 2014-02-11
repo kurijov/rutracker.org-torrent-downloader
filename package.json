@@ -1,9 +1,9 @@
 {
   "name": "rutracker",
-  "description": "Test server",
+  "description": "rutracker downloader",
   "version": "0.0.1",
   "homepage": "",
-  "author": "Lodoss team",
+  "author": "kurijov",
   "repository": "",
   "engines": {
     "node": ">=0.8.14"

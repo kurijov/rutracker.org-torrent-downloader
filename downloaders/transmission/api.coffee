@@ -13,7 +13,8 @@ requestQ = (requestData) ->
   deferred = Q.defer()
 
   request requestData, (error, response, result) ->
-    return deferred.reject E_TRANSMISSION.CANT_QUERY() if error
+    if error
+      return deferred.reject E_TRANSMISSION.CANT_QUERY(info: error.message) 
 
     deferred.resolve {response, result}
 
@@ -24,7 +25,7 @@ requestQ = (requestData) ->
 apiCall = (method, params) ->
   Config.get('transmission')
     .then (config) ->
-      host = config.host + "/transmission/rpc"
+      host = (config.host or "http://localhost:9091") + "/transmission/rpc"
 
       data = 
         method    : method
