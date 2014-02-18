@@ -73,6 +73,16 @@ describe "tracker", ->
           expect(@tracker.authorized).to.be.ok
 
 
+describe "tracker", ->
+  before ->
+    @tracker = new (require('../../trackers/rutracker'))
 
+  describe "download", ->
+
+    describe "with invalid url", ->
+
+      it 'should fail', ->
+
+        expect(@tracker.download_torrent("bla")).to.be.rejected
 
 

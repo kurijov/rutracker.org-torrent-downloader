@@ -103,7 +103,7 @@ class Rutracker
     parsedUrl = url.parse urlToTorrentTheme, yes
     torrentId = parsedUrl.query.t
 
-    throw new Error "Cant find torrent id in url" unless torrentId
+    return Q.reject "Cant find torrent id in url" unless torrentId
 
     @authorize()
       .then =>
