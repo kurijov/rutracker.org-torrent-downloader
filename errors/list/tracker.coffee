@@ -9,3 +9,7 @@ module.exports =
   CANT_DOWNLOAD_FILE : "003 Not able to download torrent file"
   
   BAD_FILE           : "004 Corrupted torrent file"
+
+  BAD_AUTH_RESPONSE  : "005 Tracker returned inapropriate auth response"
+
+  NO_TORRENT_ID      : "006 Cant find torrent id"

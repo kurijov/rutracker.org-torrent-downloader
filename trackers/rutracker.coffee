@@ -65,6 +65,8 @@ class Rutracker
   _post_auth_data: (requestData) ->
     deferred = Q.defer()
 
+    requestData.followAllRedirects = yes
+
     request requestData, (error, response, bodyResult) ->
       return deferred.reject(error) if error
 
@@ -93,6 +95,9 @@ class Rutracker
         }
 
       .then (bodyResult) ->
+        if bodyResult.length is 0
+          return Q.reject E_TRACKER.BAD_AUTH_RESPONSE()
+
         htmlSaysThatUserIsNotLoggedIn = 'action="http://login.rutracker.org/forum/login.php"'
 
         if bodyResult.indexOf(htmlSaysThatUserIsNotLoggedIn) > -1
@@ -104,7 +109,7 @@ class Rutracker
     parsedUrl = url.parse urlToTorrentTheme, yes
     torrentId = parsedUrl.query.t
 
-    return Q.reject "Cant find torrent id in url" unless torrentId
+    return Q.reject E_TRACKER.NO_TORRENT_ID() unless torrentId
 
     @authorize()
       .then =>

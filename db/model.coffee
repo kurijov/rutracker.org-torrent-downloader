@@ -27,7 +27,7 @@ class Model
             paramsToCall = [].concat([connection]).concat(params).concat([callback])
             _deattachedMethod.apply instance, paramsToCall
 
-          promise()
+          promise().then -> instance
 
     return instance
 

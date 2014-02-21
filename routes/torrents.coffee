@@ -4,7 +4,7 @@ app.get '/torrents', (req, res, next) ->
   res.respond req.manager.sync_torrents()
 
 app.post '/torrents', (req, res, next) ->
-  torrentDescription    = req.param 'torrent_url'
+  torrentDescription    = req.param('torrent_url') or ''
 
   [stuff..., folder, url] = torrentDescription.match /(\{d:([^\}]+)\})?(.*)/
 

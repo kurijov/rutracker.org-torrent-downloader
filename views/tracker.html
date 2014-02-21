@@ -9,6 +9,13 @@
   <div class="container-fluid">
     <div class="row-fluid">
       <div class="span8 offset2">
+        {% if error %}
+
+          <div class="alert">
+            [[error.code]]: [[error.message]]
+          </div>
+
+        {% endif %}
 
         <form class="form-horizontal" method="post" action="/tracker">
 
