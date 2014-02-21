@@ -32,8 +32,9 @@ class Rutracker
 
     normalizePath = require('path').normalize
 
-    torrentFilePath = normalizePath __dirname + "/../../files/file.t#{torrentId}.torrent"
+    torrentFilePath = normalizePath __dirname + "/../files/file.t#{torrentId}.torrent"
 
+    console.log 'path>>', torrentFilePath
     stream = fs.createWriteStream(torrentFilePath)
 
     stream.on 'error', (error) ->

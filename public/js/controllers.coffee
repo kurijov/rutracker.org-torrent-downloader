@@ -40,9 +40,9 @@ class TrackerListCtl
     $scope.torrents = []
     $scope.torrents = Torrent.query()
 
-    $scope.actions = 
-      check: "Check now"
-      delete: "Delete"
+    # $scope.actions = 
+    #   check: "Check now"
+    #   delete: "Delete"
 
     $scope.check = (index) ->     
       $scope.torrents[index].in_job = true

@@ -30,10 +30,14 @@
                   </a>
                   <ul class="dropdown-menu">
 
-                    <li ng-repeat="(action, title) in actions">
-                      {{$index}}
-                      <a ng-click="action($parent.$index)">{{title}}</a>
+                    <li>
+                      <a ng-click="delete($index)">Delete</a>
                     </li>
+
+                    <li>
+                      <a ng-click="check($index)">Check</a>
+                    </li>
+                    
                   </ul>
                 </li>
               </ul>
