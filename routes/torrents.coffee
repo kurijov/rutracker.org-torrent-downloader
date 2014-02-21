@@ -8,8 +8,6 @@ app.post '/torrents', (req, res, next) ->
 
   [stuff..., folder, url] = torrentDescription.match /(\{d:([^\}]+)\})?(.*)/
 
-  # folder = '' unless folder
-
   res.respond req.manager.add_torrent(url, {
     folder: folder
   })

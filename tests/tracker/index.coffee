@@ -85,4 +85,77 @@ describe "tracker", ->
 
         expect(@tracker.download_torrent("bla")).to.be.rejected
 
+    describe "with failed download", ->
+      before ->
+        @authorizeStub = sinon.stub @tracker, 'authorize'
+        @authorizeStub.returns Q()
+
+        @downloadStub = sinon.stub @tracker, '_download_torrent_file'
+        @downloadStub.returns Q.reject()
+
+        @checkTorrentSpy = sinon.stub @tracker, 'check_torrent_file'
+
+      after ->
+        @downloadStub.restore()
+        @checkTorrentSpy.restore()
+        @authorizeStub.restore()
+
+      it 'should fail', ->
+        expect(@tracker.download_torrent("http://rutracker.org/forum/viewtopic.php?t=4541800")).to.be.rejected
+
+      it 'check_torrent_file should not be called', ->
+        expect(@checkTorrentSpy.called).to.be.not.ok
+
+    describe "with valid url", ->
+      before ->
+        @downloadStub = sinon.stub @tracker, '_download_torrent_file'
+        @downloadStub.returns Q('some file path')
+
+        @checkTorrentSpy = sinon.spy @tracker, 'check_torrent_file'
+
+        @_checkTorrentStub = sinon.stub @tracker, '_check_torrent_file'
+        @_checkTorrentStub.returns Q()
+
+        @downloadResult = @tracker.download_torrent("http://rutracker.org/forum/viewtopic.php?t=4541800")
+
+      after ->
+        @downloadStub.restore()
+        @_checkTorrentStub.restore()
+        @checkTorrentSpy.restore()
+
+      it 'should call _download_torrent_file', ->
+        expect(@downloadStub.called).to.be.ok
+
+      it 'should call check_torrent_file', ->
+        expect(@checkTorrentSpy.called).to.be.ok
+
+      it 'should call _check_torrent_file', ->
+        expect(@_checkTorrentStub.called).to.be.ok
+
+      it 'must return file path', ->
+        expect(@downloadResult).to.be.fulfilled
+        expect(@downloadResult).to.eventually.eql 'some file path'
+
+    describe "with corrupted file", ->
+
+      before ->
+        @downloadStub = sinon.stub @tracker, '_download_torrent_file'
+        @downloadStub.returns Q('some file path')
+
+        @_checkTorrentStub = sinon.stub @tracker, '_check_torrent_file'
+        @_checkTorrentStub.returns Q.reject('wrong data')
+
+      after ->
+        @downloadStub.restore()
+        @_checkTorrentStub.restore()
+        @checkTorrentSpy.restore()
+
+      it 'should fail', ->
+        result = @tracker.download_torrent("http://rutracker.org/forum/viewtopic.php?t=4541800")
+        expect(result).to.be.rejected
+        result.fail (e) =>
+          expect(e).to.eql @errors.TRACKER.BAD_FILE()
+
+
+
 

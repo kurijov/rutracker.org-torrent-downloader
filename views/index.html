@@ -7,6 +7,8 @@
 <body ng-controller="TrackerListCtl">
   {% include "./_navbar.html" %}
 
+  {{actions}}
+
   <div class="container-fluid">
     <div class="row-fluid">
       <div class="span8 offset2">
@@ -29,8 +31,10 @@
                     Action
                   </a>
                   <ul class="dropdown-menu">
+
                     <li ng-repeat="(action, title) in actions">
-                      <a ng-click="{{action}}($parent.$index)">{{title}}</a>
+                      {{$index}}
+                      <a ng-click="action($parent.$index)">{{title}}</a>
                     </li>
                   </ul>
                 </li>

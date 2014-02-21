@@ -2,6 +2,7 @@ Config      = require '../db/config'
 request     = require('request')
 Q           = require 'q'
 url         = require 'url'
+fs          = require 'fs'
 
 E_TRACKER   = require('../errors').TRACKER
 
@@ -118,7 +119,9 @@ class Rutracker
     fileBad = ->
       Q.reject E_TRACKER.BAD_FILE()
 
-    readTorrent(filePath).then fileOk, fileBad
+    @_check_torrent_file(filePath).then fileOk, fileBad
+
+  _check_torrent_file: (filePath) -> readTorrent(filePath)
 
   get_torrent_title: (url) -> require('./rutracker/get_torrent_title')(url)
 
