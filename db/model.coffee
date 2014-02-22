@@ -29,6 +29,9 @@ class Model
 
           promise().then -> instance
 
+    _.each @constructor.attach, (name) =>
+      instance[name] = @[name].bind(instance)
+
     return instance
 
   @getById: (id) ->

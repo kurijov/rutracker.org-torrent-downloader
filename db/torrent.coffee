@@ -21,6 +21,8 @@ LOCK_TTL = 2 * 60 # one minute
 class TorrentModel extends require('./model')
   @persistModel: Torrent
 
+  @attach: ['lock', '_lock']
+
   _lock: ->
     @in_job = 1
     @in_job_from = new Date

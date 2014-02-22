@@ -1,5 +1,6 @@
 test:
-	./node_modules/.bin/mocha \
+	NODE_ENV=test coffee install/db
+	NODE_ENV=test ./node_modules/.bin/mocha \
 		--reporter list \
 		--compilers coffee:coffee-script \
 		--recursive ./tests \

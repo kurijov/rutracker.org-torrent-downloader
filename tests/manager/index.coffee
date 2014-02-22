@@ -12,7 +12,7 @@ transmission =
 
     @_stubs.push add_torrent = sinon.stub transmission, 'add_torrent'
 
-    add_torrent.returns Q({})
+    add_torrent.returns Q({id: 1, hashString: 'blabla'})
 
   unstub: ->
     _.each @_stubs, (stub) ->
@@ -26,7 +26,7 @@ tracker =
     download_torrent.returns Q()
 
     @_t_stubs.push get_torrent_title = sinon.stub tracker, 'get_torrent_title'
-    get_torrent_title.returns Q()
+    get_torrent_title.returns Q('title1')
 
   unstub: ->
     _.each @_t_stubs, (stub) ->
@@ -51,7 +51,38 @@ describe 'manager', ->
 
   describe 'add torrent', ->
 
-    it 'should be ok', ->
+    before ->
+      @_result = @manager.add_torrent(@valid_torrent_url)
 
-      expect(@manager.add_torrent(@valid_torrent_url)).to.be.fulfilled
+    it 'should be ok', ->
+      expect(@_result).to.be.fulfilled
+
+    it 'should be a torrent', ->
+      expect(@_result).eventually.have.property 'id'
+
+  describe 'check torrent', ->
+
+    describe 'if title didnt change', ->
+
+      before ->
+        @_reload_spy = sinon.spy @manager, 'reload_torrent'
+
+        @_result = @manager.check_torrent 1
+
+      after ->
+        @_reload_spy.restore()
+
+      it 'should be ok', ->
+        expect(@_result).to.be.fulfilled
+
+      it 'reload should not be called', ->
+        expect(@_reload_spy.called).to.be.not.ok
+
+      it 'torrent should not be in job', ->
+        @_result.then (item) ->
+          expect(item.in_job).to.eql 0
+
+
+
+
 

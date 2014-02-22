@@ -77,6 +77,12 @@ describe "tracker", ->
   before ->
     @tracker = new (require('../../trackers/rutracker'))
 
+  #   @getConfigStub = sinon.stub @tracker, 'getConfig'
+  #   @getConfigStub.returns Q({login: 'super', password: "man"})
+
+  # after ->
+  #   @getConfigStub.restore()
+
   describe "download", ->
 
     describe "with invalid url", ->
@@ -108,6 +114,9 @@ describe "tracker", ->
 
     describe "with valid url", ->
       before ->
+        @authorizeStub = sinon.stub @tracker, 'authorize'
+        @authorizeStub.returns Q()
+
         @downloadStub = sinon.stub @tracker, '_download_torrent_file'
         @downloadStub.returns Q('some file path')
 
@@ -119,6 +128,7 @@ describe "tracker", ->
         @downloadResult = @tracker.download_torrent("http://rutracker.org/forum/viewtopic.php?t=4541800")
 
       after ->
+        @authorizeStub.restore()
         @downloadStub.restore()
         @_checkTorrentStub.restore()
         @checkTorrentSpy.restore()
@@ -139,6 +149,9 @@ describe "tracker", ->
     describe "with corrupted file", ->
 
       before ->
+        @authorizeStub = sinon.stub @tracker, 'authorize'
+        @authorizeStub.returns Q()
+
         @downloadStub = sinon.stub @tracker, '_download_torrent_file'
         @downloadStub.returns Q('some file path')
 
@@ -146,6 +159,7 @@ describe "tracker", ->
         @_checkTorrentStub.returns Q.reject('wrong data')
 
       after ->
+        @authorizeStub.restore()
         @downloadStub.restore()
         @_checkTorrentStub.restore()
         @checkTorrentSpy.restore()

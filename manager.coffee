@@ -47,6 +47,7 @@ class Manager
         {}
 
   reload_torrent: (dbItemInstace) ->
+    console.log dbItemInstace
     dbItemInstace.lock()
       .then =>
         @tracker.download_torrent dbItemInstace.torrent_url
