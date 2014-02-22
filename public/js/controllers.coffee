@@ -10,7 +10,7 @@ class ErrorHandler
     @errors.push error
     @$timeout =>
       @remove error
-    , 2500
+    , 3000
 
 
 

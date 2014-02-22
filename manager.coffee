@@ -20,7 +20,6 @@ class Manager
   check_torrent: (torrentId) ->
     Torrent.getById(torrentId)
       .then (item) =>
-        console.log 'item to check', item
         @_check_torrent_item item
       .then ->
         Torrent.getById(torrentId)
@@ -66,10 +65,9 @@ class Manager
     Q.all([
       @transmission.get_session()
       @tracker.download_torrent(torrentUrl)
-      Config.get('transmission')
+      @transmission.getConfig()
     ])
     .spread( (transmissionSettings, torrentPath, transmissionConfig) =>
-      console.log 'adding', torrentPath
       params = _.defaults params, {
         download_dir: transmissionConfig.download_dir + (params.folder or '')
       }, {

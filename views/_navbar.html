@@ -1,11 +1,13 @@
 <div class="navbar">
   <div class="navbar-inner">
     <a class="brand" href="/">TD</a>
-    <ul class="nav pull-left">
-      <li ng-repeat="error in errors" class="slide">
-        <div class="alert">{{error.code}}: {{error.message}}</div>
-      </li>
-    </ul>
+    {% if page == 'torrents' %}
+      <ul class="nav pull-left">
+        <li ng-repeat="error in errors" class="slide">
+          <div class="alert">{{error.code}}: {{error.message}}</div>
+        </li>
+      </ul>
+    {% endif %}
 
     <ul class="nav pull-right">
       <li class="{% if page == 'torrents' %}active{% endif %}"><a href="/">Torrents</a></li>
