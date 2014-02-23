@@ -21,7 +21,7 @@ LOCK_TTL = 2 * 60 # one minute
 class TorrentModel extends require('./model')
   @persistModel: Torrent
 
-  @attach: ['lock', '_lock']
+  @attach: ['lock', '_lock', 'release']
 
   _lock: ->
     @in_job = 1
@@ -40,7 +40,7 @@ class TorrentModel extends require('./model')
     else
       @_lock()
 
-  unlock: () ->
+  release: () ->
     if @locked
       @$update({in_job: 0}).then =>
         @locked = no

@@ -47,7 +47,7 @@ class Manager
         {}
 
   reload_torrent: (dbItemInstace) ->
-    console.log dbItemInstace
+    console.log dbItemInstace, '<!<!<!<<!'
     dbItemInstace.lock()
       .then =>
         @tracker.download_torrent dbItemInstace.torrent_url
@@ -120,6 +120,7 @@ class Manager
       torrent_url   : torrentUrl
       download_dir  : params.download_dir
       checked_at    : new Date
+      in_job        : 0
 
     newTorrent.$save()
 
