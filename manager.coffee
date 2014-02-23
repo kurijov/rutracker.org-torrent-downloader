@@ -47,7 +47,6 @@ class Manager
         {}
 
   reload_torrent: (dbItemInstace) ->
-    console.log dbItemInstace, '<!<!<!<<!'
     dbItemInstace.lock()
       .then =>
         @tracker.download_torrent dbItemInstace.torrent_url
@@ -55,9 +54,11 @@ class Manager
         @transmission.add_torrent pathToTorrent, dbItemInstace.download_dir
       )
       .then( (torrentInfo) =>
-        dbItemInstace.update({hash: torrentInfo.hashString}).then =>
+        dbItemInstace.$update({hash: torrentInfo.hashString}).then =>
           @transmission.torrent_remove(dbItemInstace.t_id)
       )
+      .then ->
+        dbItemInstace.release()
       .then(@sync_torrents.bind(@))
 
   add_torrent: (torrentUrl, params) ->

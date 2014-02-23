@@ -28,7 +28,7 @@ class TorrentModel extends require('./model')
     @in_job_from = new Date
 
     @$update({in_job: 1, in_job_from: @in_job_from}).then =>
-      console.log 'sucessfully locked', @
+      # console.log 'sucessfully locked', @
       @locked = yes
 
   lock: () ->
