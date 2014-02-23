@@ -14,5 +14,8 @@ Requirements
 
 Installation
 -------
-just run `npm install` and `coffee install/db`
+just run `npm rebuild` and `coffee install/db`
 
+Run
+-------
+coffee server.coffee

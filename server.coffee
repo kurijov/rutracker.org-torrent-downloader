@@ -10,4 +10,4 @@ app.use(express.methodOverride())
 app.use require('./routes/main')
 
 app.listen config.web_port
-console.log 'listening at port:', config.web_port
+console.log "Listening at: http://localhost:#{config.web_port}"
