@@ -1,14 +1,13 @@
-config = require './config'
-express = require('express')
+config        = require './config'
+express       = require('express')
 
 app = express()
 
 app.use(express.logger())
 app.use(express.bodyParser())
+app.use(express.methodOverride())
 
-app.use require('./mounts/add_torrent')
-app.use require('./mounts/list')
-app.use require('./mounts/check')
+app.use require('./routes/main')
 
 app.listen config.web_port
-console.log 'listening at port:', config.web_port
+console.log "Listening at: http://localhost:#{config.web_port}"

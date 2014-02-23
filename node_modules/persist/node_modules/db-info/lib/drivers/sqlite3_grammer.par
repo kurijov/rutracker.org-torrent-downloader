@@ -1,0 +1,85 @@
+
+[*
+
+/* Switching one of these variables on will enable debug facilities
+	of the various parser drivers */
+//##PREFIX##_dbg_withtrace = true;
+
+function cleanupIdentifier(identifier) {
+  var match = identifier.match(/["'](.*)["']/);
+	if(match) {
+	  identifier = match[1];
+	}
+  return identifier;
+}
+
+*]
+
+/~ --- token definitions --- ~/
+!	' |\r|\n|\t|//[^\n]*\n' ;		/~ Characters to be ignored... ~/
+
+	"CREATE"
+	"TABLE"
+	"INDEX"
+	'\('
+	'\)'
+	';'
+	','
+	"ON"
+	"NOT"
+	"NULL"
+	"PRIMARY"
+	"KEY"
+  "AUTOINCREMENT"
+  "UNIQUE"
+  "DEFAULT"
+  "COLLATE"
+	'[\'"]?[A-Za-z_][A-Za-z0-9_]*[\'"]?' Identifier
+	'[0-9]+' Integer
+	;
+
+##
+
+/~ --- grammar specification --- ~/
+
+CreateStmt:
+	CREATE TABLE Identifier '(' ColumnDefs ')' ';'                  [* global.parserResult = { type: 'CREATE TABLE', tableName: cleanupIdentifier(%3), columns: %5 }; *]
+	| CREATE INDEX Identifier ON Identifier '(' ColumnNames ')' ';' [* global.parserResult = { type: 'CREATE INDEX', indexName: cleanupIdentifier(%3), tableName: cleanupIdentifier(%5), columns: %7 }; *]
+	;
+
+ColumnNames:
+  Identifier ',' ColumnNames                     [* %% = [ %1 ].concat(%3); *]
+	| Identifier                                   [* %% = [ %1 ]; *]
+	|
+	;
+
+ColumnDefs:
+	ColumnDef ',' ColumnDefs                       [* %% = [ %1 ].concat(%3); *]
+	| ColumnDef                                    [* %% = [ %1 ]; *]
+	|
+	;
+
+ColumnDef:
+	Identifier TypeName ColumnConstraints          [* %% = { name: %1, type: %2, columnConstraints: (%3 || []) }; *]
+	;
+
+TypeName:
+	Identifier
+	| Identifier '(' Integer ')'
+	| Identifier '(' Integer ',' Integer ')'
+	;
+
+ColumnConstraints:
+	ColumnConstraints ColumnConstraint             [* %% = (%1 || []).concat([%2]); *]
+	|                                              [* %% = []; *]
+	;
+
+ColumnConstraint:
+	'PRIMARY' 'KEY'                                [* %% = 'PRIMARY KEY' *]
+	| 'NOT' 'NULL'                                 [* %% = 'NOT NULL' *]
+	| 'AUTOINCREMENT'                              [* %% = 'AUTOINCREMENT' *]
+	| 'UNIQUE'                                     [* %% = 'UNIQUE' *]
+	| 'DEFAULT' Integer                            [* %% = { name: 'DEFAULT', value: %2 }; *]
+	| 'DEFAULT' Identifier                         [* %% = { name: 'DEFAULT', value: %2 }; *]
+	| 'COLLATE' Identifier                         [* %% = { name: 'COLLATE', value: %2 }; *]
+	;

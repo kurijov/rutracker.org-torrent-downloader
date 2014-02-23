@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  [[css('css/bootstrap/bootstrap.css')]]
+</head>
+<body>
+  {% include "./_navbar.html" %}
+
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span8 offset2">
+        {% if error %}
+
+          <div class="alert">
+            There is a problem with <strong>transmission</strong>....
+          </div>
+
+          {% if error == 'no_host' %}
+            <div class="alert">
+              You didnt set host setting for transmission yet. Set one.
+            </div>
+          {% endif %}
+
+          {% if error == 'no_connection' %}
+
+            <div class="alert">
+              Check that transmission app is running
+            </div>
+
+            <div class="alert">
+              Check Web API of transmission is turned on
+            </div>
+
+          {% endif %}
+
+          <div class="alert alert-success">
+            Hit "Save" when you are done.
+          </div>
+
+        {% endif %}
+
+        <form class="form-horizontal" method="post" action="/transmission">
+
+          <div class="control-group">
+            <label class="control-label" for="tr-host">Host</label>
+            <div class="controls">
+              <input type="text" id="tr-host" name="host" placeholder="http://localhost:9091" value="[[host]]">
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="tr-download">Download folder</label>
+            <div class="controls">
+              <input type="text" id="tr-download" name="download_dir" placeholder="By default it is your Home folder" value="[[download_dir]]">
+            </div>
+          </div>
+          
+          <div class="control-group">
+            <div class="controls">
+              <button type="submit" class="btn">Save</button>
+            </div>
+          </div>
+        </form>
+
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+ 
+</body>
+</html>

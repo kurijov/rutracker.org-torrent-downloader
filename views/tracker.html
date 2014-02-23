@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  [[css('css/bootstrap/bootstrap.css')]]
+</head>
+<body>
+  {% include "./_navbar.html" %}
+
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span8 offset2">
+        {% if error %}
+
+          <div class="alert">
+            [[error.code]]: [[error.message]]
+          </div>
+
+        {% endif %}
+
+        <form class="form-horizontal" method="post" action="/tracker">
+
+          <div class="control-group">
+            <label class="control-label" for="inputLogin">User</label>
+            <div class="controls">
+              <input type="text" id="inputLogin" name="login" placeholder="Tracker username" value="[[tracker.login]]">
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="inputPassword">Password</label>
+            <div class="controls">
+              <input type="password" id="inputPassword" name="password" placeholder="Tracker password" value="[[tracker.password]]">
+            </div>
+          </div>
+          
+          <div class="control-group">
+            <div class="controls">
+              <button type="submit" class="btn">Save</button>
+            </div>
+          </div>
+        </form>
+
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+ 
+</body>
+</html>

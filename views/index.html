@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html ng-app="trackerApp" lang="en">
+<head>
+  [[js('js/index.js')]]
+  [[css('css/bootstrap/main.less')]]
+</head>
+<body ng-controller="TrackerListCtl">
+  {% include "./_navbar.html" %}
+
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span8 offset2">
+        <div ng-hide="torrents.length">
+          There are no torrents yet. Add one from rutracker.org<br />
+          For instance <code>http://rutracker.org/forum/viewtopic.php?t=4541800</code>
+        </div>
+
+        <table class="table table-striped">
+          <tr ng-repeat="torrent in torrents">
+            <td>{{torrent | torrent_title}}</td>
+            <td>{{torrent.checked_at | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+            <td>
+
+              <i class="icon-time" ng-show="torrent.in_job"></i>
+
+              <ul class="unstyled">
+                <li class="dropdown" ng-hide="torrent.in_job">
+                  <a class="dropdown-toggle">
+                    Action
+                  </a>
+                  <ul class="dropdown-menu">
+
+                    <li>
+                      <a ng-click="delete($index)">Delete</a>
+                    </li>
+
+                    <li>
+                      <a ng-click="check($index)">Check</a>
+                    </li>
+                    
+                  </ul>
+                </li>
+              </ul>
+
+            </td>
+          </tr>
+        </table>
+
+      </div>
+
+    </div>
+
+    <div class="row-fluid">
+
+      <div class="span8 offset2">
+        <form class="form-search" ng-submit="addTorrent()">
+          <div class="input-append">
+            <input type="text" ng-model="torrentUrl" class="span12 search-query">
+            <button type="submit" class="btn">Add Torrent</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+
+
+
+  </div>
+
+
+ 
+</body>
+</html>

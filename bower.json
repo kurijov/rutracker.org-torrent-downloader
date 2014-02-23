@@ -1,0 +1,8 @@
+{
+  "name": "rutracker.org-downloader",
+  "dependencies": {
+    "angular-resource": "~1.2.13",
+    "angular": "~1.2.13",
+    "angular-animate": "~1.2.13"
+  }
+}
